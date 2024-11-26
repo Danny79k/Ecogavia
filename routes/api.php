@@ -8,6 +8,6 @@ use App\Http\Controllers\Api\v1\UserController;
 use App\Http\Controllers\Api\v1\CentroController;
 
 Route::group(['as' => 'api'], function(){
-    Orion::resource('users', UserController::class)->middleware(['auth:sanctum']);
+    Orion::resource('users', UserController::class);
     Orion::resource('centros', CentroController::class);
 });

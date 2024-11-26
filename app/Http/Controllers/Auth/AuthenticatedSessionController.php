@@ -28,7 +28,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
         $user = Auth::user();
         $token = $user->createToken('auth_token')->plainTextToken;
-
         return redirect()->intended(route('dashboard', absolute: false))
             ->with('token', $token);
     }

@@ -1,3 +1,5 @@
+console.log("hola estoy dentro de vite");
+
 async function getUsers() {
     try {
         let response = await fetch('http://localhost:8000/api/users')
@@ -11,4 +13,9 @@ async function getUsers() {
     }
 }
 
-console.log(getUsers());
+let crudButton = document.querySelector("#crudButton")
+
+crudButton.addEventListener('click', async () => {
+    let usuarios = await getUsers()
+    console.log(usuarios.data[0]);
+})
