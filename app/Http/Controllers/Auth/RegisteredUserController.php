@@ -47,7 +47,7 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        return redirect(route('users', absolute: false));
+        return redirect(route('users.index', absolute: false));
     }
 }
 // TO DO HACER ESTA MIERDA DE CREAR EL USUARIO
