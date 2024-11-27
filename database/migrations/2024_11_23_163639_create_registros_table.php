@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->boolean('inicio_ciclo');
-            $table->foreignId('centro_id')->on('centros');
+            $table->foreignId('ciclo_id')->on('ciclos');
             $table->foreignId('user_id')->on('users');
             $table->foreignId('compostera_id')->on('composteras');
         });
