@@ -1,3 +1,6 @@
+//#region [OUTDATED]
+
+
 console.log("hola estoy dentro de vite");
 const main = document.querySelector("#main")
 
