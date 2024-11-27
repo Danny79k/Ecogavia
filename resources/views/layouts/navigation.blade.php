@@ -16,11 +16,9 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @can('administrate', App\Models\User::class)
-                    <div class="p-5" id="crudButton">
-                    <x-nav-link>
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                         {{ __('Usuarios') }}  
                     </x-nav-link>
-                    </div>
                     @endcan
                 </div>
             </div>

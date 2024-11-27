@@ -1,6 +1,6 @@
 @if (session('token'))
     <script>
-        sessionStorage.setItem('sessionToken','{{session('token')}}')
+        sessionStorage.setItem('sessionToken', '{{session('token')}}')
     </script>
     <p>{{session('token')}}</p>
 @endif
@@ -11,5 +11,8 @@
             <a href="" class="px-5">lorem</a>
             <a href="" class="px-5">lorem</a>
         </navbar>
+    </div>
+    <div id="main">
+
     </div>
 </x-app-layout>

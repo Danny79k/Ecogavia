@@ -39,6 +39,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'admin',
+        'centro_id',
     ];
 
     /**
