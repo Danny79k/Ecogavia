@@ -47,7 +47,7 @@
 
                                             <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
                                                 <form action="{{ route('users.destroy', $user->id) }}" method="POST">
-                                                    <a href="{{ route('users.show', $user->id) }}" class="text-white font-bold hover:text-gray-900 mr-2">{{ __('Show') }}</a>
+                                                    <a href="{{ route('users.show', $user->id) }}" class="text-white font-bold hover:text-blue-400 mr-2">{{ __('Show') }}</a>
                                                     <a href="{{ route('users.edit', $user->id) }}" class="text-indigo-600 font-bold hover:text-indigo-900  mr-2">{{ __('Edit') }}</a>
                                                     @csrf
                                                     @method('DELETE')

@@ -13,7 +13,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/crud.js'])
+    @vite(['resources/css/app.css', 'resources/css/style.css', 'resources/js/app.js', 'resources/js/crud.js'])
 </head>
 
 <body class="font-sans antialiased">
@@ -52,7 +52,7 @@
                     <div class="p-4 sm:p-8 bg-placeholder sm:rounded-lg ">
                         <div class="w-full ">
                             <div class="main">
-
+                                
                             </div>
                         </div>
                     </div>
