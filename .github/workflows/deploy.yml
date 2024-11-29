@@ -1,6 +1,9 @@
-name: Deploy
+name: Deploy to vps
+
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - master
 
 jobs:
   deploy:
@@ -8,10 +11,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Deploy
-        uses: appleboy/ssh-action@v1.1.0
+        uses: appleboy/ssh-action@v0.1.8
         with:
           host: 200.234.228.166
           port: 2222
           username: danny
           key: ${{ secrets.ECOGAVIA }}
-          script: "cd /var/www/html/laravelDPL; git pull origin master; npm run build; sudo service php8.3-fpm reload"
+          script: "cd /var/www/html/Compost; git pull origin master; php artisan route:clear; sudo service php8.3-fpm reload;npm run build"
