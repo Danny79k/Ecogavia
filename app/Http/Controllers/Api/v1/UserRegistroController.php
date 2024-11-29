@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Requests\UserFormRequest;
 use Orion\Concerns\DisableAuthorization;
-use Orion\Http\Controllers\Controller;
+use Orion\Http\Controllers\RelationController;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-
-
-class UserController extends Controller
+class UserRegistroController extends RelationController
 {
     use DisableAuthorization;
-
     protected $model = User::class;
-    protected $request = UserFormRequest::class;
 
+    protected $relation = 'registros';
 }

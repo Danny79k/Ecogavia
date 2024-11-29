@@ -3,7 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\Centro;
+use App\Models\Compostera;
 use App\Models\User;
+use App\Models\Antes;
+use App\Models\Durante;
+use App\Models\Despues;
+use App\Models\Ciclo;
+use App\Models\Registro;
+use App\Models\Bolo;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,5 +23,12 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(10)->create();
         Centro::factory(5)->create();
+        Compostera::factory(3)->create();
+        Ciclo::factory(5)->create();
+        Antes::factory(10)->create();
+        Durante::factory(10)->create();
+        Despues::factory(10)->create();
+        Registro::factory(20)->create();
+        Bolo::factory(20)->create();
     }
 }

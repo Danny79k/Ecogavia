@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('durante', function (Blueprint $table) {
+        Schema::create('durantes', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->boolean('riego');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('durante');
+        Schema::dropIfExists('durantes');
     }
 };

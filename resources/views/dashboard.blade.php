@@ -13,7 +13,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/crud.js'])
+    @vite(['resources/css/app.css', 'resources/css/style.css', 'resources/js/app.js', 'resources/js/crud.js'])
 </head>
 
 <body class="font-sans antialiased">
@@ -47,8 +47,16 @@
                         class="text-white bg-gray-800 border hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">lorem</a>
                 </navbar>
             </div>
-            <div id="main">
-
+            <div class="py-12">
+                <div class="max-w-full mx-auto sm:px-6 lg:px-8 space-y-6">
+                    <div class="p-4 sm:p-8 bg-placeholder sm:rounded-lg ">
+                        <div class="w-full ">
+                            <div class="main">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
     </div>
