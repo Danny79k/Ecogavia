@@ -4,7 +4,7 @@ const main = document.querySelector(".main")
 
 async function getRegistros(p) {
     try {
-        let response = await fetch(`http://localhost:8000/api/registros`)
+        let response = await fetch(`/api/registros`)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -16,7 +16,7 @@ async function getRegistros(p) {
 }
 async function getCentro(id) {
     try {
-        let response = await fetch(`http://localhost:8000/api/centros/${id}`)
+        let response = await fetch(`/api/centros/${id}`)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -29,7 +29,7 @@ async function getCentro(id) {
 
 async function getUser(id) { // porque me odias tambien
     try {
-        let response = await fetch(`http://localhost:8000/api/users/${id}`)
+        let response = await fetch(`/api/users/${id}`)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -42,7 +42,7 @@ async function getUser(id) { // porque me odias tambien
 
 async function getRegisterUserHasManyRelation(userId) {
     try {
-        let response = await fetch(`http://localhost:8000/api/users/${userId}/registros`)
+        let response = await fetch(`/api/users/${userId}/registros`)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
