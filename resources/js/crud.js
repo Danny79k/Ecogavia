@@ -2,9 +2,9 @@ console.log("hola estoy dentro de vite");
 const main = document.querySelector(".main")
 
 
-async function getRegistros() {
+async function getRegistros(p) {
     try {
-        let response = await fetch('http://localhost:8000/api/registros')
+        let response = await fetch(`http://localhost:8000/api/registros`)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
