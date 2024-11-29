@@ -1,0 +1,17 @@
+name: Deploy
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: 200.234.228.166
+          port: 2222
+          username: danny
+          key: ${{ secrets.ECOGAVIA }}
+          script: "cd /var/www/html/Ecogavia; git pull origin master; npm run build; sudo service php8.3-fpm reload"
