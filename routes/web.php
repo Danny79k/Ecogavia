@@ -6,7 +6,7 @@ use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware('auth')->name('dashboard');
 
 Route::resource('users', UserController::class)
     ->middleware(['auth', 'verified']);

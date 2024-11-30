@@ -15,6 +15,9 @@ class RegistroController extends Controller
     use DisableAuthorization, DisablePagination;
 
     protected $model = Registro::class;
-
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:sanctum');
+    // }
     
 }

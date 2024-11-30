@@ -1,10 +1,19 @@
 console.log("hola estoy dentro de vite");
 const main = document.querySelector(".main")
+const token = sessionStorage.getItem('sessionToken')
+
+const option = {
+    method: 'GET',
+    headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+    }
+}
 
 
 async function getRegistros() {
     try {
-        let response = await fetch(`/api/registros`)
+        let response = await fetch(`/api/registros`,option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -17,7 +26,7 @@ async function getRegistros() {
 
 async function getRegistro(id) {
     try {
-        let response = await fetch(`/api/registros/${id}`)
+        let response = await fetch(`/api/registros/${id}`,option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -30,7 +39,7 @@ async function getRegistro(id) {
 
 async function getCentro(id) {
     try {
-        let response = await fetch(`/api/centros/${id}`)
+        let response = await fetch(`/api/centros/${id}`,option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -43,7 +52,7 @@ async function getCentro(id) {
 
 async function getUser(id) { // porque me odias tambien
     try {
-        let response = await fetch(`/api/users/${id}`)
+        let response = await fetch(`/api/users/${id}`,option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -56,7 +65,7 @@ async function getUser(id) { // porque me odias tambien
 
 async function getRegisterUserHasManyRelation(userId) {
     try {
-        let response = await fetch(`/api/users/${userId}/registros`)
+        let response = await fetch(`/api/users/${userId}/registros`,option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -69,7 +78,7 @@ async function getRegisterUserHasManyRelation(userId) {
 
 async function getAntes(registroId) {
     try {
-        let response = await fetch(`/api/antes/${registroId}`)
+        let response = await fetch(`/api/registros/${registroId}/antes`,option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -81,7 +90,7 @@ async function getAntes(registroId) {
 }
 async function getDurante(registroId) {
     try {
-        let response = await fetch(`/api/durante/${registroId}`)
+        let response = await fetch(`/api/registros/${registroId}/durante`,option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -93,7 +102,7 @@ async function getDurante(registroId) {
 }
 async function getDespues(registroId) {
     try {
-        let response = await fetch(`/api/despues/${registroId}`)
+        let response = await fetch(`/api/registros/${registroId}/despues`,option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -220,11 +229,14 @@ registros.addEventListener('click', async () => {
             let Id = e.target.textContent
             console.log("id registro: " + Id);
             main.innerHTML = ''
+
             let registroEntero = await getRegistro(Id)
             let registrosAntes = await getAntes(Id)
             let registrosDurante = await getDurante(Id)
             let registrosDespues = await getDespues(Id)
 
+            //#region fix me 
+            console.log(registrosAntes.data);
 
             // crear tabla registro entero
 
