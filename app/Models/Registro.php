@@ -15,4 +15,14 @@ class Registro extends Model
         'ciclo_id',
         'compostera_id',
     ];
+
+    public function antes(){
+        return $this->hasMany(Antes::class);
+    }
+    public function durante(){
+        return $this->hasMany(Durante::class);
+    }
+    public function despues(){
+        return $this->hasMany(related: Despues::class);
+    }
 }
