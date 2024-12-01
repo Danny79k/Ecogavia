@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\v1\AntesController;
 use App\Http\Controllers\Api\v1\BoloCicloController;
 use App\Http\Controllers\Api\v1\BoloController;
 use App\Http\Controllers\Api\v1\CicloController;
+use App\Http\Controllers\Api\v1\CicloRegistroController;
 use App\Http\Controllers\Api\v1\DespuesController;
 use App\Http\Controllers\Api\v1\DuranteController;
 use App\Http\Controllers\Api\v1\RegistroAntesController;
@@ -33,4 +34,5 @@ Route::group(['as' => 'api'], function () {
     Orion::hasManyResource('registros', 'durante', RegistroDuranteController::class);
     Orion::hasManyResource('registros', 'despues', RegistroDespuesController::class);
     Orion::hasManyResource('bolos', 'ciclos', BoloCicloController::class);
-});
+    Orion::hasManyResource('ciclos', 'registros', CicloRegistroController::class);
+})->middleware('auth:sanctum');
