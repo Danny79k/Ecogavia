@@ -8,6 +8,7 @@ use Orion\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Registro;
 use App\Models\User;
+use App\Policies\RegistroPolicy;
 
 
 class RegistroController extends Controller
@@ -15,6 +16,8 @@ class RegistroController extends Controller
     use DisableAuthorization, DisablePagination;
 
     protected $model = Registro::class;
+
+    protected $policy = RegistroPolicy::class;
     // public function __construct()
     // {
     //     $this->middleware('auth:sanctum');

@@ -32,7 +32,6 @@
             <script>
                 sessionStorage.setItem('sessionToken', '{{session('token')}}')
             </script>
-            <p>{{session('token')}}</p>
         @endif
         <!-- Page Content -->
         <main>
