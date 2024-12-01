@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\v1\AntesController;
+use App\Http\Controllers\Api\v1\BoloCicloController;
+use App\Http\Controllers\Api\v1\BoloController;
+use App\Http\Controllers\Api\v1\CicloController;
 use App\Http\Controllers\Api\v1\DespuesController;
 use App\Http\Controllers\Api\v1\DuranteController;
 use App\Http\Controllers\Api\v1\RegistroAntesController;
@@ -22,9 +25,12 @@ Route::group(['as' => 'api'], function () {
     Orion::resource('antes', AntesController::class);
     Orion::resource('durante', DuranteController::class);
     Orion::resource('despues', DespuesController::class);
+    Orion::resource('bolos', BoloController::class);
+    Orion::resource('ciclos', CicloController::class);
 
     Orion::hasManyResource('users', 'registros', UserRegistroController::class);
     Orion::hasManyResource('registros', 'antes', RegistroAntesController::class);
     Orion::hasManyResource('registros', 'durante', RegistroDuranteController::class);
     Orion::hasManyResource('registros', 'despues', RegistroDespuesController::class);
+    Orion::hasManyResource('bolos', 'ciclos', BoloCicloController::class);
 });
