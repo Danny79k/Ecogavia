@@ -1,6 +1,7 @@
 console.log("hola estoy dentro de vite");
 const main = document.querySelector(".main")
 const token = sessionStorage.getItem('sessionToken')
+let spinner = document.querySelector(".spinner")
 
 const option = {
     method: 'GET',
@@ -13,7 +14,7 @@ const option = {
 
 async function getRegistros() {
     try {
-        let response = await fetch(`/api/registros`,option)
+        let response = await fetch(`/api/registros`, option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -26,7 +27,7 @@ async function getRegistros() {
 
 async function getRegistro(id) {
     try {
-        let response = await fetch(`/api/registros/${id}`,option)
+        let response = await fetch(`/api/registros/${id}`, option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -39,7 +40,7 @@ async function getRegistro(id) {
 
 async function getCentro(id) {
     try {
-        let response = await fetch(`/api/centros/${id}`,option)
+        let response = await fetch(`/api/centros/${id}`, option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -52,7 +53,7 @@ async function getCentro(id) {
 
 async function getUser(id) { // porque me odias tambien
     try {
-        let response = await fetch(`/api/users/${id}`,option)
+        let response = await fetch(`/api/users/${id}`, option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -65,7 +66,7 @@ async function getUser(id) { // porque me odias tambien
 
 async function getRegisterUserHasManyRelation(userId) {
     try {
-        let response = await fetch(`/api/users/${userId}/registros`,option)
+        let response = await fetch(`/api/users/${userId}/registros`, option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -78,7 +79,7 @@ async function getRegisterUserHasManyRelation(userId) {
 
 async function getAntes(registroId) {
     try {
-        let response = await fetch(`/api/registros/${registroId}/antes`,option)
+        let response = await fetch(`/api/registros/${registroId}/antes`, option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -90,7 +91,7 @@ async function getAntes(registroId) {
 }
 async function getDurante(registroId) {
     try {
-        let response = await fetch(`/api/registros/${registroId}/durante`,option)
+        let response = await fetch(`/api/registros/${registroId}/durante`, option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -102,7 +103,7 @@ async function getDurante(registroId) {
 }
 async function getDespues(registroId) {
     try {
-        let response = await fetch(`/api/registros/${registroId}/despues`,option)
+        let response = await fetch(`/api/registros/${registroId}/despues`, option)
         if (!response.ok) {
             console.log("no se ha podido procesar la peticion");
         } else {
@@ -113,14 +114,133 @@ async function getDespues(registroId) {
     }
 }
 
+async function getBolos() {
+    try {
+        let response = await fetch(`/api/bolos`, option)
+        if (!response.ok) {
+            console.log("no se ha podido procesar la peticion");
+        } else {
+            return await response.json()
+        }
+    } catch (e) {
+        throw new Error(`error en recuperar los registros: ${e}`)
+    }
+}
+
+async function getBoloHasManyCiclos(idBolo) {
+    try {
+        let response = await fetch(`/api/bolos/${idBolo}/ciclos`, option)
+        if (!response.ok) {
+            console.log("no se ha podido procesar la peticion");
+        } else {
+            return await response.json()
+        }
+    } catch (e) {
+        throw new Error(`error en recuperar los registros: ${e}`)
+    }
+}
+
+//#region informacion cargada al entrar en la pagina de bolos y ciclos
+
+document.addEventListener('DOMContentLoaded', async () => {
+    main.innerHTML = ''
+
+    let registros = await getBolos();
+    if (!registros.length) {
+        spinner.classList.remove("hidden")
+    }
+
+    let table = document.createElement("table")
+    let thead = document.createElement("thead")
+    let trColumna = document.createElement("tr")
+    let thId = document.createElement("th")
+    let thObservaciones = document.createElement("th")
+    let thCreado = document.createElement("th")
+    let thActualizado = document.createElement("th")
+
+    thId.innerHTML = "id"
+    thObservaciones.innerHTML = "observaciones"
+    thCreado.innerHTML = "creado"
+    thActualizado.innerHTML = "actualizado"
+
+    trColumna.appendChild(thId)
+    trColumna.appendChild(thObservaciones)
+    trColumna.appendChild(thCreado)
+    trColumna.appendChild(thActualizado)
+
+
+    thead.appendChild(trColumna)
+    table.appendChild(thead)
+
+    let tBody = document.createElement("tbody")
+
+    table.classList.add("text-white", "text-center", "w-full", "divide-y", "bg-slate-850", "divide-slate-700")
+    console.log(registros.data);
+    for (let i = 0; i < registros.data.length; i++) {
+
+        // vamos a crear el boton del id de los usuarios para poder acceder a todos los registros realizados por un solo usuario
+
+        let row = document.createElement("tr")
+        row.classList.add("border")
+
+        let celdaId = document.createElement("td");
+        celdaId.classList.add("celdaId", "p-2");
+        let celdaObservaciones = document.createElement("td");
+        celdaObservaciones.classList.add("celdaUsuario");
+        let celdaCreado = document.createElement("td");
+        celdaCreado.classList.add("celdaCreado");
+        let celdaActualizado = document.createElement("td");
+        celdaActualizado.classList.add("celdaActualizado");
+
+        celdaId.innerHTML = `<button class="boloId">${registros.data[i].id}</button>`;
+        celdaObservaciones.innerHTML = registros.data[i].observaciones;
+        celdaCreado.textContent = registros.data[i].created_at.substr(0, 10);
+        celdaActualizado.textContent = registros.data[i].updated_at.substr(0, 10);
+
+
+        row.appendChild(celdaId);
+        row.appendChild(celdaObservaciones);
+        row.appendChild(celdaCreado);
+        row.appendChild(celdaActualizado);
+
+        tBody.appendChild(row)
+
+
+
+    }
+    let div1 = document.createElement("div")
+    let div2 = document.createElement("div")
+    table.appendChild(tBody)
+    div2.appendChild(table)
+    div2.classList.add('flex', 'justify-center', "inline-block", "min-w-full", "py-2", "align-middle", "soy-tonto")
+    div1.appendChild(div2)
+    div1.classList.add("mt-8", "overflow-x-auto")
+    main.appendChild(div1)
+    main.classList.add("flow-root")
+    spinner.classList.add("hidden")
+    document.querySelector(".bg-placeholder").classList.add("bg-slate-900")
+
+    let botonIdBolo = document.querySelectorAll(".boloId")
+    botonIdBolo.forEach((boton) => {
+        boton.addEventListener("click", async (e) => {
+            let boloId = e.target.textContent
+            let registroCiclos = await getBoloHasManyCiclos(boloId)
+            console.log(registroCiclos.data);
+        })
+    })
+
+})
+
+
 let registros = document.querySelector("#registros")
 
 registros.addEventListener('click', async () => {
     main.innerHTML = ''
     let registros = []
 
+    registros = await getRegistros() // CONSULTA
     if (!registros.length) {
-        registros = await getRegistros() // CONSULTA
+        spinner.classList.remove("hidden")
     }
 
     let table = document.createElement("table")
@@ -217,6 +337,7 @@ registros.addEventListener('click', async () => {
     div1.classList.add("mt-8", "overflow-x-auto")
     main.appendChild(div1)
     main.classList.add("flow-root")
+    spinner.classList.add("hidden")
     document.querySelector(".bg-placeholder").classList.add("bg-slate-900")
 
     // aqui se accede a los registros de forma manual de uno en uno pudiendo entrar en detalle de los ciclos
@@ -236,7 +357,7 @@ registros.addEventListener('click', async () => {
             let registrosDespues = await getDespues(Id)
 
             //#region fix me 
-            console.log(registrosAntes.data);
+            console.log(registrosAntes.data[0]);
 
             // crear tabla registro entero
 
@@ -400,15 +521,15 @@ registros.addEventListener('click', async () => {
             celdaActualizadoAntes.classList.add("celdaActualizadoAntes", "p-2");
 
 
-            celdaHumedad.textContent = registrosAntes.data.humedad || "N/A";
-            celdaNivelLlenado.textContent = registrosAntes.data.nivel_llenado || "N/A";
-            celdaObservaciones.textContent = registrosAntes.data.observaciones || "Sin observaciones";
-            celdaOlor.textContent = registrosAntes.data.olor || "Normal";
-            celdaInsectos.textContent = registrosAntes.data.presencia_insectos || "No especificado";
-            celdaTempAmbiental.textContent = registrosAntes.data.temperatura_ambiental || "N/A";
-            celdaTempComp.textContent = registrosAntes.data.temperatura_compostera || "N/A";
-            celdaCreadoAntes.textContent = registrosAntes.data.created_at.substr(0, 10);
-            celdaActualizadoAntes.textContent = registrosAntes.data.updated_at.substr(0, 10);
+            celdaHumedad.textContent = registrosAntes.data[0].humedad || "N/A";
+            celdaNivelLlenado.textContent = registrosAntes.data[0].nivel_llenado || "N/A";
+            celdaObservaciones.textContent = registrosAntes.data[0].observaciones || "Sin observaciones";
+            celdaOlor.textContent = registrosAntes.data[0].olor || "Normal";
+            celdaInsectos.textContent = registrosAntes.data[0].presencia_insectos || "No especificado";
+            celdaTempAmbiental.textContent = registrosAntes.data[0].temperatura_ambiental || "N/A";
+            celdaTempComp.textContent = registrosAntes.data[0].temperatura_compostera || "N/A";
+            celdaCreadoAntes.textContent = registrosAntes.data[0].created_at.substr(0, 10);
+            celdaActualizadoAntes.textContent = registrosAntes.data[0].updated_at.substr(0, 10);
 
 
             rowAntes.appendChild(celdaHumedad);
@@ -508,14 +629,14 @@ registros.addEventListener('click', async () => {
             celdaActualizadoDurante.classList.add("celdaActualizadoDurante", "p-2");
 
             // Asignar contenido a las celdas
-            celdaRiego.textContent = registrosDurante.data.riego || "No especificado";
-            celdaRevolver.textContent = registrosDurante.data.revolver || "No especificado";
-            celdaAporteVerde.textContent = registrosDurante.data.aporte_verde || "No especificado";
-            celdaTipoAporteVerde.textContent = registrosDurante.data.tipo_aporte_verde || "No especificado";
-            celdaAporteSeco.textContent = registrosDurante.data.aporte_seco || "No especificado";
-            celdaObservacionesDurante.textContent = registrosDurante.data.observaciones || "Sin observaciones";
-            celdaCreadoDurante.textContent = registrosDurante.data.created_at.substr(0, 10);
-            celdaActualizadoDurante.textContent = registrosDurante.data.updated_at.substr(0, 10);
+            celdaRiego.textContent = registrosDurante.data[0].riego || "No especificado";
+            celdaRevolver.textContent = registrosDurante.data[0].revolver || "No especificado";
+            celdaAporteVerde.textContent = registrosDurante.data[0].aporte_verde || "No especificado";
+            celdaTipoAporteVerde.textContent = registrosDurante.data[0].tipo_aporte_verde || "No especificado";
+            celdaAporteSeco.textContent = registrosDurante.data[0].aporte_seco || "No especificado";
+            celdaObservacionesDurante.textContent = registrosDurante.data[0].observaciones || "Sin observaciones";
+            celdaCreadoDurante.textContent = registrosDurante.data[0].created_at.substr(0, 10);
+            celdaActualizadoDurante.textContent = registrosDurante.data[0].updated_at.substr(0, 10);
 
             // Agregar celdas a la fila
             rowDurante.appendChild(celdaRiego);
