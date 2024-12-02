@@ -170,13 +170,12 @@ async function getCiclo(idCiclo) {
 
 document.addEventListener('DOMContentLoaded', async () => {
     main.innerHTML = ''
-    main.innerHTML = '<h1>Bolos</h1>'
-
+    
     let registros = await getBolos();
     if (!registros.length) {
         spinner.classList.remove("hidden")
     }
-
+    
     let table = document.createElement("table")
     let thead = document.createElement("thead")
     let trColumna = document.createElement("tr")
@@ -184,32 +183,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     let thObservaciones = document.createElement("th")
     let thCreado = document.createElement("th")
     let thActualizado = document.createElement("th")
-
+    
     thId.innerHTML = "id"
     thObservaciones.innerHTML = "observaciones"
     thCreado.innerHTML = "creado"
     thActualizado.innerHTML = "actualizado"
-
+    
     trColumna.appendChild(thId)
     trColumna.appendChild(thObservaciones)
     trColumna.appendChild(thCreado)
     trColumna.appendChild(thActualizado)
-
-
+    
+    
     thead.appendChild(trColumna)
     table.appendChild(thead)
-
+    
     let tBody = document.createElement("tbody")
-
+    
     table.classList.add("text-white", "text-center", "w-full", "divide-y", "bg-slate-850", "divide-slate-700")
     console.log(registros.data);
     for (let i = 0; i < registros.data.length; i++) {
-
+        
         // vamos a crear el boton del id de los usuarios para poder acceder a todos los registros realizados por un solo usuario
-
+        
         let row = document.createElement("tr")
         row.classList.add("border")
-
+        
         let celdaId = document.createElement("td");
         celdaId.classList.add("celdaId", "p-2");
         let celdaObservaciones = document.createElement("td");
@@ -218,22 +217,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         celdaCreado.classList.add("celdaCreado");
         let celdaActualizado = document.createElement("td");
         celdaActualizado.classList.add("celdaActualizado");
-
+        
         celdaId.innerHTML = `<button class="boloId">${registros.data[i].id}</button>`;
         celdaObservaciones.innerHTML = registros.data[i].observaciones;
         celdaCreado.textContent = registros.data[i].created_at.substr(0, 10);
         celdaActualizado.textContent = registros.data[i].updated_at.substr(0, 10);
-
-
+        
+        
         row.appendChild(celdaId);
         row.appendChild(celdaObservaciones);
         row.appendChild(celdaCreado);
         row.appendChild(celdaActualizado);
-
+        
         tBody.appendChild(row)
-
-
-
+        
+        
+        
     }
     let div1 = document.createElement("div")
     let div2 = document.createElement("div")
@@ -242,6 +241,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     div2.classList.add('flex', 'justify-center', "inline-block", "min-w-full", "py-2", "align-middle", "soy-tonto")
     div1.appendChild(div2)
     div1.classList.add("mt-8", "overflow-x-auto")
+    main.innerHTML = '<h1>Bolos</h1>'
     main.appendChild(div1)
     main.classList.add("flow-root")
     spinner.classList.add("hidden")
@@ -400,24 +400,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             }
             tableCiclo.appendChild(tBodyCiclo)
+            main.innerHTML = `<h1>ciclos del bolo ${boloId}</h1>`
             main.appendChild(tableCiclo)
-
+            
             spinner.classList.add("hidden")
             document.querySelector(".bg-placeholder").classList.add("bg-slate-900")
-
+            
             let botonesIdCiclos = document.querySelectorAll(".idCiclo")
             botonesIdCiclos.forEach((boton) => {
                 boton.addEventListener("click", async (e) => {
                     let idCiclo = e.target.textContent
                     main.innerHTML = ""
-
+                    
                     let registros = await getCiclosHasManyRegistros(idCiclo)
                     let registroCiclo = await getCiclo(idCiclo)
                     if (!registroCiclo.length || !registroCiclo.length) {
                         spinner.classList.remove("hidden")
                     }
-
-
+                    
+                    
                     let tableCiclo = document.createElement("table")
                     let theadCiclo = document.createElement("thead")
                     let trColumnaCiclo = document.createElement("tr")
@@ -428,7 +429,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     let thFechaFin = document.createElement("th")
                     let thCreadoCiclo = document.createElement("th")
                     let thActualizadoCiclo = document.createElement("th")
-
+                    
                     thIdCiclo.innerHTML = "id"
                     thNCiclo.innerHTML = "numero ciclo"
                     thIdBoloCiclo.innerHTML = "id bolo"
@@ -436,7 +437,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     thFechaFin.innerHTML = "fecha fin"
                     thCreadoCiclo.innerHTML = "creado"
                     thActualizadoCiclo.innerHTML = "actualizado"
-
+                    
                     trColumnaCiclo.appendChild(thIdCiclo)
                     trColumnaCiclo.appendChild(thNCiclo)
                     trColumnaCiclo.appendChild(thIdBoloCiclo)
@@ -444,19 +445,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                     trColumnaCiclo.appendChild(thFechaFin)
                     trColumnaCiclo.appendChild(thCreadoCiclo)
                     trColumnaCiclo.appendChild(thActualizadoCiclo)
-
-
+                    
+                    
                     theadCiclo.appendChild(trColumnaCiclo)
                     tableCiclo.appendChild(theadCiclo)
-
+                    
                     let tBodyCiclo = document.createElement("tbody")
                     let n = 1
                     tableCiclo.classList.add("text-white", "text-center", "w-full", "divide-y", "bg-slate-850", "divide-slate-700")
                     // vamos a crear el boton del id de los usuarios para poder acceder a todos los registros realizados por un solo usuario
-
+                    
                     let rowCiclo = document.createElement("tr")
                     rowCiclo.classList.add("border")
-
+                    
                     let celdaIdCiclo = document.createElement("td");
                     celdaIdCiclo.classList.add("celdaId", "p-2")
                     let celdaNCiclo = document.createElement("td");
@@ -471,8 +472,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     celdaCreado.classList.add("celdaCreado");
                     let celdaActualizado = document.createElement("td");
                     celdaActualizado.classList.add("celdaActualizado");
-
-
+                    
+                    
                     celdaIdCiclo.innerHTML = registroCiclo.data.id
                     celdaNCiclo.textContent = n++
                     celdaIdBolo.innerHTML = registroCiclo.data.bolo_id;
@@ -480,7 +481,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     celdaFinCiclo.innerHTML = registroCiclo.data.fecha_fin;
                     celdaCreado.textContent = registroCiclo.data.created_at.substr(0, 10);
                     celdaActualizado.textContent = registroCiclo.data.updated_at.substr(0, 10);
-
+                    
                     rowCiclo.appendChild(celdaIdCiclo);
                     rowCiclo.appendChild(celdaNCiclo);
                     rowCiclo.appendChild(celdaIdBolo);
@@ -488,10 +489,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                     rowCiclo.appendChild(celdaFinCiclo);
                     rowCiclo.appendChild(celdaCreado);
                     rowCiclo.appendChild(celdaActualizado);
-
+                    
                     tBodyCiclo.appendChild(rowCiclo)
-
+                    
                     tableCiclo.appendChild(tBodyCiclo)
+                    main.innerHTML = `<h1>registros del ciclo ${idCiclo}</h1>`
                     main.appendChild(tableCiclo)
 
 
@@ -521,31 +523,32 @@ document.addEventListener('DOMContentLoaded', async () => {
                     trColumna.appendChild(thCentro)
                     trColumna.appendChild(thCreado)
                     trColumna.appendChild(thActualizado)
-
-
+                    
+                    
                     thead.appendChild(trColumna)
                     table.appendChild(thead)
-
+                    
                     let tBody = document.createElement("tbody")
-
+                    
                     table.classList.add("text-white", "text-center", "w-full", "divide-y", "bg-slate-850", "divide-slate-700")
                     console.log(registros.data);
                     for (let i = 0; i < registros.data.length; i++) {
-
+                        
+                        
                         let user = await getUser(registros.data[i].user_id) // porque me odias 
-
+                        
                         // vamos a crear el boton del id de los usuarios para poder acceder a todos los registros realizados por un solo usuario
-
+                        
                         console.log(registros.data[i].user_id);
                         console.log(user.data.name);
-
+                        
                         let row = document.createElement("tr")
                         row.classList.add("border")
-
+                        
                         let celdaId = document.createElement("td");
                         celdaId.classList.add("celdaId", "p-2");
                         let celdaUsuario = document.createElement("td");
-
+                        
                         celdaUsuario.classList.add("celdaUsuario");
                         let celdaCompostera = document.createElement("td");
                         celdaCompostera.classList.add("celdaCompostera");
@@ -557,7 +560,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         celdaCreado.classList.add("celdaCreado");
                         let celdaActualizado = document.createElement("td");
                         celdaActualizado.classList.add("celdaActualizado");
-
+                        
                         celdaId.innerHTML = `<button class="buttonId">${registros.data[i].id}</button>`;
                         celdaUsuario.innerHTML = `<button class="buttonIdUser">${registros.data[i].user_id}</button>${user.data.name}`;
                         celdaCompostera.textContent = registros.data[i].compostera_id;
@@ -565,8 +568,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         celdaInicioCiclo.textContent = registros.data[i].inicio_ciclo;
                         celdaCreado.textContent = registros.data[i].created_at.substr(0, 10);
                         celdaActualizado.textContent = registros.data[i].updated_at.substr(0, 10);
-
-
+                        
+                        
                         row.appendChild(celdaId);
                         row.appendChild(celdaUsuario);
                         row.appendChild(celdaCompostera);
@@ -574,9 +577,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         row.appendChild(celdaInicioCiclo);
                         row.appendChild(celdaCreado);
                         row.appendChild(celdaActualizado);
-
+                        
                         tBody.appendChild(row)
-
+                        
                     }
                     let div1 = document.createElement("div")
                     let div2 = document.createElement("div")
@@ -589,7 +592,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     main.classList.add("flow-root")
                     spinner.classList.add("hidden")
                     document.querySelector(".bg-placeholder").classList.add("bg-slate-900")
-
+                    
                     const botonId = document.querySelectorAll(".buttonId")
                     console.log(botonId);
                     botonId.forEach(boton => {
@@ -597,21 +600,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                             let Id = e.target.textContent
                             console.log("id registro: " + Id);
                             main.innerHTML = ''
-                            main.innerHTML = '<h1>Bolos</h1>'
-
+                            
                             let registroEntero = await getRegistro(Id)
                             let registrosAntes = await getAntes(Id)
                             let registrosDurante = await getDurante(Id)
                             let registrosDespues = await getDespues(Id)
-
+                            
                             if (!registroEntero.length || !registrosAntes.length || !registrosDurante.length || registrosDespues.length) {
                                 spinner.classList.remove("hidden")
                             }
-
+                            
                             console.log(registrosAntes.data[0]);
-
+                            
                             // crear tabla registro entero
-
+                            
                             let table = document.createElement("table")
                             let thead = document.createElement("thead")
                             let trColumna = document.createElement("tr")
@@ -622,7 +624,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             let thCentro = document.createElement("th")
                             let thCreado = document.createElement("th")
                             let thActualizado = document.createElement("th")
-
+                            
                             thId.innerHTML = "id"
                             thNombre.innerHTML = "usuario"
                             thACorreo.innerHTML = "compostera"
@@ -630,7 +632,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             thCentro.innerHTML = "inicio ciclo"
                             thCreado.innerHTML = "creado"
                             thActualizado.innerHTML = "actualizado"
-
+                            
                             trColumna.appendChild(thId)
                             trColumna.appendChild(thNombre)
                             trColumna.appendChild(thACorreo)
@@ -638,25 +640,25 @@ document.addEventListener('DOMContentLoaded', async () => {
                             trColumna.appendChild(thCentro)
                             trColumna.appendChild(thCreado)
                             trColumna.appendChild(thActualizado)
-
-
+                            
+                            
                             thead.appendChild(trColumna)
                             table.appendChild(thead)
 
                             let tBody = document.createElement("tbody")
-
+                            
                             table.classList.add("text-white", "text-center", "w-full", "divide-y", "bg-slate-850", "divide-slate-700")
                             console.log(registros.data);
-
+                            
                             let user = await getUser(registroEntero.data.user_id) // porque me odias 
-
+                            
                             let row = document.createElement("tr")
                             row.classList.add("border")
-
+                            
                             let celdaId = document.createElement("td");
                             celdaId.classList.add("celdaId", "p-2");
                             let celdaUsuario = document.createElement("td");
-
+                            
                             celdaUsuario.classList.add("celdaUsuario");
                             let celdaCompostera = document.createElement("td");
                             celdaCompostera.classList.add("celdaCompostera");
@@ -668,7 +670,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             celdaCreado.classList.add("celdaCreado");
                             let celdaActualizado = document.createElement("td");
                             celdaActualizado.classList.add("celdaActualizado");
-
+                            
                             celdaId.textContent = registroEntero.data.id;
                             celdaUsuario.innerHTML = `<button class="buttonIdUser"><p>${registroEntero.data.user_id}<p></button>${user.data.name}`;
                             celdaCompostera.textContent = registroEntero.data.compostera_id;
@@ -676,8 +678,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                             celdaInicioCiclo.textContent = registroEntero.data.inicio_ciclo;
                             celdaCreado.textContent = registroEntero.data.created_at.substr(0, 10);
                             celdaActualizado.textContent = registroEntero.data.updated_at.substr(0, 10);
-
-
+                            
+                            
                             row.appendChild(celdaId);
                             row.appendChild(celdaUsuario);
                             row.appendChild(celdaCompostera);
@@ -685,18 +687,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                             row.appendChild(celdaInicioCiclo);
                             row.appendChild(celdaCreado);
                             row.appendChild(celdaActualizado);
-
+                            
                             tBody.appendChild(row)
-
+                            
                             table.appendChild(tBody)
+                            main.innerHTML = '<h1>Estado de registros</h1>'
                             main.appendChild(table)
-
+                            
                             // TABLA ANTES
-
+                            
                             let tableAntes = document.createElement("table")
                             let theadAntes = document.createElement("thead")
                             let trColumnaAntes = document.createElement("tr")
-
+                            
                             // Crear nuevos encabezados (th) con nombres actualizados
                             let thHumedad = document.createElement("th");
                             let thNivelLLenado = document.createElement("th");
@@ -707,7 +710,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             let thTempComp = document.createElement("th");
                             let thCreadoAntes = document.createElement("th");
                             let thActualizadoAntes = document.createElement("th");
-
+                            
                             // Asignar contenido a los encabezados
                             thHumedad.innerHTML = "Humedad";
                             thNivelLLenado.innerHTML = "Nivel de Llenado";
@@ -718,7 +721,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             thTempComp.innerHTML = "Temperatura Compostera";
                             thCreadoAntes.innerHTML = "Creado";
                             thActualizadoAntes.innerHTML = "Actualizado";
-
+                            
                             // Agregar los nuevos encabezados a la fila de la tabla
                             trColumnaAntes.appendChild(thHumedad);
                             trColumnaAntes.appendChild(thNivelLLenado);
@@ -729,49 +732,49 @@ document.addEventListener('DOMContentLoaded', async () => {
                             trColumnaAntes.appendChild(thTempComp);
                             trColumnaAntes.appendChild(thCreadoAntes);
                             trColumnaAntes.appendChild(thActualizadoAntes);
-
-
-
+                            
+                            
+                            
                             theadAntes.appendChild(trColumnaAntes)
                             tableAntes.appendChild(theadAntes)
-
+                            
                             let tBodyAntes = document.createElement("tbody")
-
+                            
                             tableAntes.classList.add("text-white", "text-center", "w-full", "divide-y", "bg-slate-850", "divide-slate-700")
                             console.log(registros.data);
-
+                            
                             let rowAntes = document.createElement("tr")
                             row.classList.add("border")
-
+                            
                             // Crear nuevas celdas para las filas de datos
                             let celdaHumedad = document.createElement("td");
                             celdaHumedad.classList.add("celdaHumedad", "p-2");
-
+                            
                             let celdaNivelLlenado = document.createElement("td");
                             celdaNivelLlenado.classList.add("celdaNivelLlenado", "p-2");
-
+                            
                             let celdaObservaciones = document.createElement("td");
                             celdaObservaciones.classList.add("celdaObservaciones", "p-2");
-
+                            
                             let celdaOlor = document.createElement("td");
                             celdaOlor.classList.add("celdaOlor", "p-2");
-
+                            
                             let celdaInsectos = document.createElement("td");
                             celdaInsectos.classList.add("celdaInsectos", "p-2");
-
+                            
                             let celdaTempAmbiental = document.createElement("td");
                             celdaTempAmbiental.classList.add("celdaTempAmbiental", "p-2");
-
+                            
                             let celdaTempComp = document.createElement("td");
                             celdaTempComp.classList.add("celdaTempComp", "p-2");
-
+                            
                             let celdaCreadoAntes = document.createElement("td");
                             celdaCreadoAntes.classList.add("celdaCreadoAntes", "p-2");
-
+                            
                             let celdaActualizadoAntes = document.createElement("td");
                             celdaActualizadoAntes.classList.add("celdaActualizadoAntes", "p-2");
-
-
+                            
+                            
                             celdaHumedad.textContent = registrosAntes.data[0].humedad || "N/A";
                             celdaNivelLlenado.textContent = registrosAntes.data[0].nivel_llenado || "N/A";
                             celdaObservaciones.textContent = registrosAntes.data[0].observaciones || "Sin observaciones";
@@ -781,8 +784,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                             celdaTempComp.textContent = registrosAntes.data[0].temperatura_compostera || "N/A";
                             celdaCreadoAntes.textContent = registrosAntes.data[0].created_at.substr(0, 10);
                             celdaActualizadoAntes.textContent = registrosAntes.data[0].updated_at.substr(0, 10);
-
-
+                            
+                            
                             rowAntes.appendChild(celdaHumedad);
                             rowAntes.appendChild(celdaNivelLlenado);
                             rowAntes.appendChild(celdaObservaciones);
@@ -792,21 +795,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                             rowAntes.appendChild(celdaTempComp);
                             rowAntes.appendChild(celdaCreadoAntes);
                             rowAntes.appendChild(celdaActualizadoAntes);
-
-
+                            
+                            
                             tBodyAntes.appendChild(rowAntes)
-
-
+                            
+                            
                             tableAntes.appendChild(tBodyAntes)
                             // main.innerHTML = `<h3 class="text-white font-bold">Antes</h3>`
                             main.appendChild(tableAntes)
-
+                            
                             // TABLA DURANTE
-
+                            
                             let tableDurante = document.createElement("table");
                             let theadDurante = document.createElement("thead");
                             let trColumnaDurante = document.createElement("tr");
-
+                            
                             // Crear nuevos encabezados (th) con los nombres actualizados
                             let thRiego = document.createElement("th");
                             let thRevolver = document.createElement("th");
@@ -816,7 +819,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             let thObservacionesDurante = document.createElement("th");
                             let thCreadoDurante = document.createElement("th");
                             let thActualizadoDurante = document.createElement("th");
-
+                            
                             // Asignar contenido a los encabezados
                             thRiego.innerHTML = "Riego";
                             thRevolver.innerHTML = "Revolver";
@@ -826,7 +829,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                             thObservacionesDurante.innerHTML = "Observaciones";
                             thCreadoDurante.innerHTML = "Creado";
                             thActualizadoDurante.innerHTML = "Actualizado";
-
+                            
                             // Agregar los nuevos encabezados a la fila de la tabla
                             trColumnaDurante.appendChild(thRiego);
                             trColumnaDurante.appendChild(thRevolver);
@@ -836,12 +839,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                             trColumnaDurante.appendChild(thObservacionesDurante);
                             trColumnaDurante.appendChild(thCreadoDurante);
                             trColumnaDurante.appendChild(thActualizadoDurante);
-
+                            
                             theadDurante.appendChild(trColumnaDurante);
                             tableDurante.appendChild(theadDurante);
-
+                            
                             let tBodyDurante = document.createElement("tbody");
-
+                            
                             tableDurante.classList.add(
                                 "text-white",
                                 "text-center",
@@ -851,13 +854,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 "divide-slate-700"
                             );
                             console.log(registros.data);
-
+                            
                             let rowDurante = document.createElement("tr");
-
+                            
                             // Crear nuevas celdas para las filas de datos
                             let celdaRiego = document.createElement("td");
                             celdaRiego.classList.add("celdaRiego", "p-2");
-
+                            
                             let celdaRevolver = document.createElement("td");
                             celdaRevolver.classList.add("celdaRevolver", "p-2");
 
@@ -1109,7 +1112,6 @@ registros.addEventListener('click', async () => {
             let Id = e.target.textContent
             console.log("id registro: " + Id);
             main.innerHTML = ''
-            main.innerHTML = '<h1>Estados de registro</h1>'
 
             let registroEntero = await getRegistro(Id)
             let registrosAntes = await getAntes(Id)
@@ -1197,6 +1199,7 @@ registros.addEventListener('click', async () => {
             tBody.appendChild(row)
 
             table.appendChild(tBody)
+            main.innerHTML = '<h1>Estados de registro</h1>'
             main.appendChild(table)
 
             // TABLA ANTES

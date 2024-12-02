@@ -6,8 +6,13 @@
 }
 
 h1 {
-    font-size: 90px !important;
+    font-size: 60px !important;
     color:rgb(80, 80, 80) !important;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: 100;
+    border-bottom: 5cm;
+    border-bottom: solid;
+    display: inline;
+    padding-left: 35px;
+    padding-right: 35px;
 }
