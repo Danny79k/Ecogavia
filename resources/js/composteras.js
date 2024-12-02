@@ -93,7 +93,7 @@ botonInsertar.addEventListener('click', async () => {
     div2.classList.add('flex', 'justify-center', "inline-block", "min-w-full", "py-2", "align-middle", "soy-tonto")
     div1.appendChild(div2)
     div1.classList.add("mt-8", "overflow-x-auto")
-    main.innerHTML = '<h1>Bolos</h1>'
+    main.innerHTML = '<h1>Composteras</h1>'
     main.appendChild(div1)
     main.classList.add("flow-root") 
 })
