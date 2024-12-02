@@ -19,6 +19,7 @@ use Orion\Facades\Orion;
 use App\Http\Controllers\Api\v1\UserController;
 use App\Http\Controllers\Api\v1\CentroController;
 
+
 Route::group(['as' => 'api'], function () {
     Orion::resource('centros', CentroController::class);
     Orion::resource('registros', RegistroController::class);
