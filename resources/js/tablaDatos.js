@@ -4,6 +4,7 @@ const token = sessionStorage.getItem('sessionToken')
 let spinner = document.querySelector(".spinner")
 console.log(token);
 
+
 const option = {
     method: 'GET',
     headers: {

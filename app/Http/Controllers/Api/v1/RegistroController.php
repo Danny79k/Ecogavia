@@ -13,7 +13,7 @@ use App\Policies\RegistroPolicy;
 
 class RegistroController extends Controller
 {
-    use DisableAuthorization, DisablePagination;
+    use DisablePagination;
 
     protected $model = Registro::class;
 

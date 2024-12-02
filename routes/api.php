@@ -35,4 +35,4 @@ Route::group(['as' => 'api'], function () {
     Orion::hasManyResource('registros', 'despues', RegistroDespuesController::class);
     Orion::hasManyResource('bolos', 'ciclos', BoloCicloController::class);
     Orion::hasManyResource('ciclos', 'registros', CicloRegistroController::class);
-})->middleware('auth:sanctum');
+});
