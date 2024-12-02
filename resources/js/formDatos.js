@@ -49,9 +49,13 @@ botonInsertar.addEventListener('click', () => {
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="sm:col-span-3" id="contenedorCiclo"></div>
-                                    <div class="sm:col-span-3" id="contedorBolo"></div>
+                                    <div class="col-span-full" id="contenedorObservaciones">
+                                        <label for="observaciones_bolo" class="block text-sm/6 font-medium text-gray-900">Observaciones</label>
+                                        <div class="mt-2">
+                                            <textarea name="observaciones_bolo" id="observaciones_bolo" rows="3"
+                                                class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"></textarea>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -329,16 +333,12 @@ botonInsertar.addEventListener('click', () => {
     const composteraBtn = document.getElementById("compostera");
     const formDatosBoton = document.querySelector(".submit")
     const formDatos = document.querySelector(".formDatos")
-    
-
 
     formDatosBoton.addEventListener('click', insertarDatos);
+    inicioCicloBtn.addEventListener('input', mostrarObservacionesBolo);
+    composteraBtn.addEventListener('input', mostrarObservacionesBolo);
 
-    inicioCicloBtn.addEventListener('input', mostrarBolo);
-    inicioCicloBtn.addEventListener('input', mostrarCiclo);
-    // composteraBtn.addEventListener('input', mostrarBolo);
-
-    async function insertarDatos(){
+    async function insertarDatos() {
         const formDatas = new FormData(formDatos)
         const data = Object.fromEntries(formDatas.entries());
         console.log(data);
@@ -351,7 +351,7 @@ botonInsertar.addEventListener('click', () => {
                 body: JSON.stringify({ observaciones: data.observaciones })
             });
             const bolo = await boloResponse.json();
-    
+
             // Insertar en "ciclo"
             const cicloResponse = await fetch('/api/ciclos', {
                 method: 'POST',
@@ -359,7 +359,7 @@ botonInsertar.addEventListener('click', () => {
                 body: JSON.stringify({ id_bolo: bolo.id_bolo, descripcion: data.descripcionCiclo })
             });
             const ciclo = await cicloResponse.json();
-    
+
             // Insertar en "registros"
             const registroResponse = await fetch('/api/registros', {
                 method: 'POST',
@@ -367,14 +367,14 @@ botonInsertar.addEventListener('click', () => {
                 body: JSON.stringify({ id_ciclo: ciclo.id_ciclo, detalle: data.detalleRegistro })
             });
             const registro = await registroResponse.json();
-    
+
             // Insertar en "estados"
             // const estadoResponse = await fetch('/api/estados', {
             //     method: 'POST',
             //     headers: { 'Content-Type': 'application/json' },
             //     body: JSON.stringify({ id_registro: registro.id_registro, estado: data.estado })
             // });
-    
+
             // const estado = await estadoResponse.json();
             alert('Datos insertados correctamente: ' + JSON.stringify(estado));
         } catch (error) {
@@ -382,77 +382,42 @@ botonInsertar.addEventListener('click', () => {
             alert('Hubo un error al insertar los datos.');
         }
     }
-    
-    function mostrarCiclo() {
-        let contenedorCiclo = document.getElementById("contenedorCiclo");
-    
-        if (inicioCicloBtn.value === "No") {
+
+    function mostrarObservacionesBolo() {
+        if (inicioCicloBtn.value == "Si" && composteraBtn.value == 1) {
+            let contenedorObservaciones = document.createElement("div");
+            contenedorObservaciones.classList.add("col-span-full");
+            contenedorObservaciones.id = "contenedorObservaciones";
+
             let label = document.createElement("label");
-            label.setAttribute("for", "ciclo");
+            label.setAttribute("for", "observaciones_bolo");
             label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
-            label.textContent = "Ciclo";
-    
+            label.textContent = "Observaciones";
+
             let separador = document.createElement("div");
             separador.classList.add("mt-2");
-    
-            let selectorCiclo = document.createElement("select");
-            selectorCiclo.name = "ciclo";
-            selectorCiclo.id = "ciclo";
-            selectorCiclo.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3", "py-1.5",
-                "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1", "outline-gray-300",
-                "placeholder:text-gray-400", "focus:outline-2", "focus:-outline-offset-2",
-                "focus:outline-indigo-600", "sm:text-sm/6");
-    
-            let eleccion = document.createElement("option");
-            eleccion.value = 10;
-            eleccion.textContent = eleccion.value;
-    
-            selectorCiclo.appendChild(eleccion);
-            separador.appendChild(selectorCiclo);
-            contenedorCiclo.appendChild(label);
-            contenedorCiclo.appendChild(separador);
-        } else {
-            if (contenedorCiclo.hasChildNodes()) {
-                while (contenedorCiclo.firstElementChild) { contenedorCiclo.firstElementChild.remove(); }
-            }
-        }
-    }
-    
-    function mostrarBolo() {
-        let contenedorBolo = document.getElementById("contenedorBolo");
-        
-        if (inicioCicloBtn.value === "No") {
-            console.log("boloDIV");
-            let label = document.createElement("label");
-            label.setAttribute("for", "bolo");
-            label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
-            label.textContent = "Bolo";
-    
-            let separador = document.createElement("div");
-            separador.classList.add("mt-2");
-    
-            let selectorBolo = document.createElement("select");
-            selectorBolo.name = "bolo";
-            selectorBolo.id = "bolo";
-            selectorBolo.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3", "py-1.5",
-                "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1", "outline-gray-300",
-                "placeholder:text-gray-400", "focus:outline-2", "focus:-outline-offset-2",
-                "focus:outline-indigo-600", "sm:text-sm/6");
-    
-            let eleccion = document.createElement("option");
-            eleccion.value = 10;
-            eleccion.textContent = eleccion.value;
-    
-            selectorBolo.appendChild(eleccion);
-            separador.appendChild(selectorBolo);
-            contenedorBolo.appendChild(label);
-            contenedorBolo.appendChild(separador);
+
+            let observaciones = document.createElement("textarea");
+            observaciones.name = "observaciones_bolo";
+            observaciones.id = "observaciones_bolo";
+            observaciones.rows = 3;
+            observaciones.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3",
+                "py-1.5", "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1",
+                "outline-gray-300", "placeholder:text-gray-400", "focus:outline-2",
+                "focus:-outline-offset-2", "focus:outline-indigo-600", "sm:text-sm/6");
+
+            separador.appendChild(observaciones);
+            contenedorObservaciones.appendChild(label);
+            contenedorObservaciones.appendChild(separador);
+            inicioCicloBtn.parentElement.parentElement.parentElement.appendChild(contenedorObservaciones);
+        } else if (document.getElementById("contenedorObservaciones")) {
+            document.getElementById("contenedorObservaciones").remove();
         }
     }
 })
 
 
-    
+
 
 
 
