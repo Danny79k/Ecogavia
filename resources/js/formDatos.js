@@ -361,7 +361,7 @@ main.addEventListener('click', (e) => {
             const cicloResponse = await fetch('/api/ciclos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_bolo: bolo.id_bolo, descripcion: data.descripcionCiclo })
+                body: JSON.stringify({ /*bolo_id:*/ })
             });
             const ciclo = await cicloResponse.json();
         }
