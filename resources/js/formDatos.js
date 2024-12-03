@@ -343,22 +343,6 @@ main.addEventListener('click', (e) => {
             console.log(data);
 
             try {
-                // Insertar en "bolo"
-                const boloResponse = await fetch('/api/bolos', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ observaciones: data.observaciones_bolo })
-                });
-                const bolo = await boloResponse.json();
-
-                // Insertar en "ciclo"
-                const cicloResponse = await fetch('/api/ciclos', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_bolo: bolo.id_bolo, descripcion: data.descripcionCiclo })
-                });
-                const ciclo = await cicloResponse.json();
-
                 // Insertar en "registros"
                 const registroResponse = await fetch('/api/registros', {
                     method: 'POST',
@@ -366,20 +350,30 @@ main.addEventListener('click', (e) => {
                     body: JSON.stringify({ id_ciclo: ciclo.id_ciclo, detalle: data.detalleRegistro })
                 });
                 const registro = await registroResponse.json();
-
-                // Insertar en "estados"
-                // const estadoResponse = await fetch('/api/estados', {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({ id_registro: registro.id_registro, estado: data.estado })
-                // });
-
-                // const estado = await estadoResponse.json();
-                alert('Datos insertados correctamente: ' + JSON.stringify(estado));
             } catch (error) {
                 console.error('Error durante la inserción:', error);
                 alert('Hubo un error al insertar los datos.');
             }
+        }
+
+        async function crearCiclo() {
+            // Insertar en "ciclo"
+            const cicloResponse = await fetch('/api/ciclos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id_bolo: bolo.id_bolo, descripcion: data.descripcionCiclo })
+            });
+            const ciclo = await cicloResponse.json();
+        }
+
+        async function crearBolo() {
+            // Insertar en "bolo"
+            const boloResponse = await fetch('/api/bolos', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ observaciones: data.observaciones_bolo })
+            });
+            const bolo = await boloResponse.json();
         }
 
         function mostrarObservacionesBolo() {
