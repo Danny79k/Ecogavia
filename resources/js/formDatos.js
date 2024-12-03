@@ -43,8 +43,8 @@ main.addEventListener('click', (e) => {
                                         <div class="mt-2">
                                             <select name="inicio_ciclo" id="inicio_ciclo"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Si">Si</option>
-                                                <option value="No">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="0">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -347,7 +347,7 @@ main.addEventListener('click', (e) => {
                 const registroResponse = await fetch('/api/registros', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ id_ciclo: ciclo.id_ciclo, detalle: data.detalleRegistro })
+                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, compostera_id: data.compostera })
                 });
                 const registro = await registroResponse.json();
             } catch (error) {
@@ -377,7 +377,7 @@ main.addEventListener('click', (e) => {
         }
 
         function mostrarObservacionesBolo() {
-            if (inicioCicloBtn.value == "Si" && composteraBtn.value == 1) {
+            if (inicioCicloBtn.value == 1 && composteraBtn.value == 1) {
                 let contenedorObservaciones = document.createElement("div");
                 contenedorObservaciones.classList.add("col-span-full");
                 contenedorObservaciones.id = "contenedorObservaciones";
