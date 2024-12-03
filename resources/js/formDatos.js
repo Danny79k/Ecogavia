@@ -48,7 +48,6 @@ main.addEventListener('click', (e) => {
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="sm:col-span-3" id="contenedorBolo"></div>
                                 </div>
                             </div>
 
@@ -330,11 +329,13 @@ main.addEventListener('click', (e) => {
         formDatosBoton.addEventListener('click', insertarDatos);
 
         inicioCicloBtn.addEventListener('input', mostrarObservacionesBolo);
-        
-        inicioCicloBtn.addEventListener('input', mostrarBolo);
-        composteraBtn.addEventListener('input', mostrarBolo);
 
+        consultarDatos();
         mostrarObservacionesBolo();
+
+        async function consultarDatos() {
+            //campo booleano en ciclos y ENUM en bolos
+        }
 
         async function insertarDatos() {
             const formDatas = new FormData(formDatos)
@@ -410,41 +411,6 @@ main.addEventListener('click', (e) => {
                 inicioCicloBtn.parentElement.parentElement.parentElement.appendChild(contenedorObservaciones);
             } else if (document.getElementById("contenedorObservaciones")) {
                 document.getElementById("contenedorObservaciones").remove();
-            }
-        }
-
-        function mostrarBolo() {
-            let contenedorBolo = document.getElementById("contenedorBolo");
-
-            if (inicioCicloBtn.value === "No" && composteraBtn.value != 1) {
-                let label = document.createElement("label");
-                label.setAttribute("for", "bolo");
-                label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
-                label.textContent = "Bolo";
-
-                let separador = document.createElement("div");
-                separador.classList.add("mt-2");
-
-                let selectorBolo = document.createElement("select");
-                selectorBolo.name = "bolo";
-                selectorBolo.id = "bolo";
-                selectorBolo.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3", "py-1.5",
-                    "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1", "outline-gray-300",
-                    "placeholder:text-gray-400", "focus:outline-2", "focus:-outline-offset-2",
-                    "focus:outline-indigo-600", "sm:text-sm/6");
-
-                let eleccion = document.createElement("option");
-                eleccion.value = 10;
-                eleccion.textContent = eleccion.value;
-
-                selectorBolo.appendChild(eleccion);
-                separador.appendChild(selectorBolo);
-                contenedorBolo.appendChild(label);
-                contenedorBolo.appendChild(separador);
-            } else {
-                if (contenedorBolo.hasChildNodes()) {
-                    while (contenedorBolo.firstElementChild) { contenedorBolo.firstElementChild.remove(); }
-                }
             }
         }
     }
