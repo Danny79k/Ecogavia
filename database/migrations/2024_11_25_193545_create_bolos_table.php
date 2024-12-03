@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('observaciones');
             $table->timestamps();
+            $table->boolean('terminado');
+            $table->boolean('ciclo1');
+            $table->boolean('ciclo2');
+            $table->boolean('ciclo3');
         });
     }
 

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 class CicloRegistroController extends RelationController
 {
 
-    use DisableAuthorization;
+    // use DisableAuthorization;
     protected $model = Ciclo::class;
 
     protected $relation = "registros";

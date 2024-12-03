@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->date('fecha_inicio');
             $table->date('fecha_fin');
+            $table->boolean('terminado');
         });
     }
 
