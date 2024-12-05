@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\v1\AntesController;
 use App\Http\Controllers\Api\v1\BoloCicloController;
 use App\Http\Controllers\Api\v1\BoloController;
+use App\Http\Controllers\Api\v1\CicloComposteraController;
 use App\Http\Controllers\Api\v1\CicloController;
 use App\Http\Controllers\Api\v1\CicloRegistroController;
 use App\Http\Controllers\Api\v1\ComposteraController;
@@ -37,4 +38,6 @@ Route::group(['as' => 'api'], function () {
     Orion::hasManyResource('registros', 'despues', RegistroDespuesController::class);
     Orion::hasManyResource('bolos', 'ciclos', BoloCicloController::class);
     Orion::hasManyResource('ciclos', 'registros', CicloRegistroController::class);
+
+    Orion::belongsToResource('ciclo', 'compostera', CicloComposteraController::class);
 });

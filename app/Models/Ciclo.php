@@ -12,5 +12,9 @@ class Ciclo extends Model
 
     public function registros() {
         return $this->hasMany(Registro::class);
-    } 
+    }
+
+    public function compostera(){
+        return $this->belongsTo(Compostera::class);
+    }
 }

@@ -23,7 +23,8 @@ async function getComposteras() {
     }
 }
 
-botonInsertar.addEventListener('click', async () => {
+botonInsertar.addEventListener('click', async (e) => {
+    e.preventDefault()
     main.innerHTML = ''
     let registros = await getComposteras()
     console.log(registros.data);
