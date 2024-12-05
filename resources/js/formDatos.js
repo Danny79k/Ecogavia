@@ -330,50 +330,98 @@ main.addEventListener('click', (e) => {
 
         inicioCicloBtn.addEventListener('input', mostrarObservacionesBolo);
 
-        consultarDatos();
         mostrarObservacionesBolo();
 
-        async function consultarDatos() {
-            //campo booleano en ciclos y ENUM en bolos
+        async function consultarCompostera(id) {
+            let compostera = await fetch(`/api/composteras/${id}`)
+                .then((response) => response.json())
+                .then((objeto) => objeto);
+            console.log(compostera);
+            return compostera;
+        }
+
+        async function consultarCiclos() {
+            let consultaCiclos = await fetch('/api/ciclos')
+                .then((response) => response.json())
+                .then((objeto) => objeto.data);
+            let ciclo = consultaCiclos.find(ciclo => ciclo.terminado == 0 && ciclo.compostera_id == composteraBtn.value);
+            console.log(ciclo);
+            return ciclo;
+        }
+
+        async function consultarBolos() {
+            let consultaBolos = await fetch('/api/bolos')
+                .then((response) => response.json())
+                .then((objeto) => objeto.data);
+            let bolo = {}
+            if (composteraBtn.value == 2) {
+                bolo = consultaBolos.find(bolo => bolo.ciclo1 == 1);
+            } else if (composteraBtn.value == 3) {
+                bolo = consultaBolos.find(bolo => bolo.ciclo2 == 1);
+            }
+
+            console.log(bolo);
+            return bolo;
         }
 
         async function insertarDatos() {
             const formDatas = new FormData(formDatos)
             const data = Object.fromEntries(formDatas.entries());
             console.log(data);
+            let compostera = await consultarCompostera(data.compostera);
+            let ciclo = await consultarCiclos();
 
             try {
+                if (!ciclo) {
+                    if (data.compostera == 1 && data.inicio_ciclo == 1) {
+                        let bolo = await crearBolo();
+                        console.log(bolo);
+
+                        ciclo = await crearCiclo(bolo);
+                        console.log(ciclo);
+
+                    } else if (data.compostera != 1 && data.inicio_ciclo == 1) {
+                        let bolo = await consultarBolos();
+
+                        ciclo = await crearCiclo(bolo);
+                        console.log(ciclo);
+                    }
+                }
+
                 // Insertar en "registros"
                 const registroResponse = await fetch('/api/registros', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, compostera_id: data.compostera })
+                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, ciclo_id: ciclo.id, user_id: 1, compostera_id: data.compostera })
                 });
                 const registro = await registroResponse.json();
+                console.log(registro);
             } catch (error) {
                 console.error('Error durante la inserción:', error);
                 alert('Hubo un error al insertar los datos.');
             }
-        }
 
-        async function crearCiclo() {
-            // Insertar en "ciclo"
-            const cicloResponse = await fetch('/api/ciclos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ /*bolo_id:*/ })
-            });
-            const ciclo = await cicloResponse.json();
-        }
+            async function crearCiclo(bolo) {
+                // Insertar en "ciclo"
+                const cicloResponse = await fetch('/api/ciclos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ bolo_id: bolo.id, compostera_id: data.compostera })
+                });
+                let ciclo_promise = await cicloResponse.json();
+                return ciclo_promise.data;
+            }
 
-        async function crearBolo() {
-            // Insertar en "bolo"
-            const boloResponse = await fetch('/api/bolos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ observaciones: data.observaciones_bolo })
-            });
-            const bolo = await boloResponse.json();
+            async function crearBolo() {
+                // Insertar en "bolo"
+                const boloResponse = await fetch('/api/bolos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ observaciones: data.observaciones_bolo })
+                });
+                let bolo_promise = await boloResponse.json();
+                return bolo_promise.data;
+            }
         }
 
         function mostrarObservacionesBolo() {

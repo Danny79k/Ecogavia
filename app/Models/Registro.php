@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Sanctum\HasApiTokens;
+//use Laravel\Sanctum\HasApiTokens;
 
 class Registro extends Model
 {
 
-    use HasFactory, HasApiTokens;
+    use HasFactory;
     protected $fillable = [
         'inicio_ciclo',
         'user_id',
@@ -17,13 +17,16 @@ class Registro extends Model
         'compostera_id',
     ];
 
-    public function antes(){
+    public function antes()
+    {
         return $this->hasMany(Antes::class);
     }
-    public function durante(){
+    public function durante()
+    {
         return $this->hasMany(Durante::class);
     }
-    public function despues(){
-        return $this->hasMany(related: Despues::class);
+    public function despues()
+    {
+        return $this->hasMany(Despues::class);
     }
 }
