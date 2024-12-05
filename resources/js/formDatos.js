@@ -1,6 +1,12 @@
 const main = document.querySelector(".main")
 
 const botonInsertar = document.querySelector(".insertarRegistro");
+const token = sessionStorage.getItem('sessionToken');
+
+const option = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+}
 
 main.addEventListener('click', (e) => {
     if (e.target.classList.contains('boloId')) {
@@ -23,7 +29,7 @@ main.addEventListener('click', (e) => {
                                                 class="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                                 <select name="compostera" id="compostera"
                                                     class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
-                                                    <option>${e.target.textContent}</option>
+                                                    <option value="${e.target.textContent}">${e.target.textContent}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -333,16 +339,20 @@ main.addEventListener('click', (e) => {
         mostrarObservacionesBolo();
 
         async function consultarCompostera(id) {
-            let compostera = await fetch(`/api/composteras/${id}`)
-                .then((response) => response.json())
-                .then((objeto) => objeto);
+            let compostera = await fetch(`/api/composteras/${id}`, {
+                method: 'GET',
+                headers: option
+            }).then((response) => response.json())
+                .then((objeto) => objeto.data);
             console.log(compostera);
             return compostera;
         }
 
         async function consultarCiclos() {
-            let consultaCiclos = await fetch('/api/ciclos')
-                .then((response) => response.json())
+            let consultaCiclos = await fetch('/api/ciclos', {
+                method: 'GET',
+                headers: option
+            }).then((response) => response.json())
                 .then((objeto) => objeto.data);
             let ciclo = consultaCiclos.find(ciclo => ciclo.terminado == 0 && ciclo.compostera_id == composteraBtn.value);
             console.log(ciclo);
@@ -372,6 +382,7 @@ main.addEventListener('click', (e) => {
             let ciclo = await consultarCiclos();
 
             try {
+                /*
                 if (!ciclo) {
                     if (data.compostera == 1 && data.inicio_ciclo == 1) {
                         let bolo = await crearBolo();
@@ -395,7 +406,7 @@ main.addEventListener('click', (e) => {
                     body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, ciclo_id: ciclo.id, user_id: 1, compostera_id: data.compostera })
                 });
                 const registro = await registroResponse.json();
-                console.log(registro);
+                console.log(registro);*/
             } catch (error) {
                 console.error('Error durante la inserción:', error);
                 alert('Hubo un error al insertar los datos.');
