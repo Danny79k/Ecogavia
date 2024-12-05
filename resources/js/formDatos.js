@@ -1,9 +1,10 @@
 const main = document.querySelector(".main")
 
-const botonInsertar = document.querySelector(".insertarRegistro")
+const botonInsertar = document.querySelector(".insertarRegistro");
 
-botonInsertar.addEventListener('click', () => {
-    main.innerHTML = `
+main.addEventListener('click', (e) => {
+    if (e.target.classList.contains('boloId')) {
+        main.innerHTML = `
         <div>
             <div id="main">
                 <div class="bg-white shadow p-5 mt-5 max-w-7xl mx-auto rounded-lg">
@@ -22,9 +23,7 @@ botonInsertar.addEventListener('click', () => {
                                                 class="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                                 <select name="compostera" id="compostera"
                                                     class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
+                                                    <option>${e.target.textContent}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -44,14 +43,11 @@ botonInsertar.addEventListener('click', () => {
                                         <div class="mt-2">
                                             <select name="inicio_ciclo" id="inicio_ciclo"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Si">Si</option>
-                                                <option value="No">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="0">No</option>
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="sm:col-span-3" id="contenedorCiclo"></div>
-                                    <div class="sm:col-span-3" id="contedorBolo"></div>
                                 </div>
                             </div>
 
@@ -325,134 +321,97 @@ botonInsertar.addEventListener('click', () => {
     `
 
 
-    const inicioCicloBtn = document.getElementById("inicio_ciclo");
-    const composteraBtn = document.getElementById("compostera");
-    const formDatosBoton = document.querySelector(".submit")
-    const formDatos = document.querySelector(".formDatos")
-    
+        const inicioCicloBtn = document.getElementById("inicio_ciclo");
+        const composteraBtn = document.getElementById("compostera");
+        const formDatosBoton = document.querySelector(".submit")
+        const formDatos = document.querySelector(".formDatos")
 
+        formDatosBoton.addEventListener('click', insertarDatos);
 
-    formDatosBoton.addEventListener('click', insertarDatos);
+        inicioCicloBtn.addEventListener('input', mostrarObservacionesBolo);
 
-    inicioCicloBtn.addEventListener('input', mostrarBolo);
-    inicioCicloBtn.addEventListener('input', mostrarCiclo);
-    // composteraBtn.addEventListener('input', mostrarBolo);
+        consultarDatos();
+        mostrarObservacionesBolo();
 
-    async function insertarDatos(){
-        const formDatas = new FormData(formDatos)
-        const data = Object.fromEntries(formDatas.entries());
-        console.log(data);
+        async function consultarDatos() {
+            //campo booleano en ciclos y ENUM en bolos
+        }
 
-        try {
-            // Insertar en "bolo"
-            const boloResponse = await fetch('/api/bolos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ observaciones: data.observaciones })
-            });
-            const bolo = await boloResponse.json();
-    
+        async function insertarDatos() {
+            const formDatas = new FormData(formDatos)
+            const data = Object.fromEntries(formDatas.entries());
+            console.log(data);
+
+            try {
+                // Insertar en "registros"
+                const registroResponse = await fetch('/api/registros', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, compostera_id: data.compostera })
+                });
+                const registro = await registroResponse.json();
+            } catch (error) {
+                console.error('Error durante la inserción:', error);
+                alert('Hubo un error al insertar los datos.');
+            }
+        }
+
+        async function crearCiclo() {
             // Insertar en "ciclo"
             const cicloResponse = await fetch('/api/ciclos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_bolo: bolo.id_bolo, descripcion: data.descripcionCiclo })
+                body: JSON.stringify({ /*bolo_id:*/ })
             });
             const ciclo = await cicloResponse.json();
-    
-            // Insertar en "registros"
-            const registroResponse = await fetch('/api/registros', {
+        }
+
+        async function crearBolo() {
+            // Insertar en "bolo"
+            const boloResponse = await fetch('/api/bolos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_ciclo: ciclo.id_ciclo, detalle: data.detalleRegistro })
+                body: JSON.stringify({ observaciones: data.observaciones_bolo })
             });
-            const registro = await registroResponse.json();
-    
-            // Insertar en "estados"
-            // const estadoResponse = await fetch('/api/estados', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ id_registro: registro.id_registro, estado: data.estado })
-            // });
-    
-            // const estado = await estadoResponse.json();
-            alert('Datos insertados correctamente: ' + JSON.stringify(estado));
-        } catch (error) {
-            console.error('Error durante la inserción:', error);
-            alert('Hubo un error al insertar los datos.');
+            const bolo = await boloResponse.json();
         }
-    }
-    
-    function mostrarCiclo() {
-        let contenedorCiclo = document.getElementById("contenedorCiclo");
-    
-        if (inicioCicloBtn.value === "No") {
-            let label = document.createElement("label");
-            label.setAttribute("for", "ciclo");
-            label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
-            label.textContent = "Ciclo";
-    
-            let separador = document.createElement("div");
-            separador.classList.add("mt-2");
-    
-            let selectorCiclo = document.createElement("select");
-            selectorCiclo.name = "ciclo";
-            selectorCiclo.id = "ciclo";
-            selectorCiclo.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3", "py-1.5",
-                "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1", "outline-gray-300",
-                "placeholder:text-gray-400", "focus:outline-2", "focus:-outline-offset-2",
-                "focus:outline-indigo-600", "sm:text-sm/6");
-    
-            let eleccion = document.createElement("option");
-            eleccion.value = 10;
-            eleccion.textContent = eleccion.value;
-    
-            selectorCiclo.appendChild(eleccion);
-            separador.appendChild(selectorCiclo);
-            contenedorCiclo.appendChild(label);
-            contenedorCiclo.appendChild(separador);
-        } else {
-            if (contenedorCiclo.hasChildNodes()) {
-                while (contenedorCiclo.firstElementChild) { contenedorCiclo.firstElementChild.remove(); }
+
+        function mostrarObservacionesBolo() {
+            if (inicioCicloBtn.value == 1 && composteraBtn.value == 1) {
+                let contenedorObservaciones = document.createElement("div");
+                contenedorObservaciones.classList.add("col-span-full");
+                contenedorObservaciones.id = "contenedorObservaciones";
+
+                let label = document.createElement("label");
+                label.setAttribute("for", "observaciones_bolo");
+                label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
+                label.textContent = "Observaciones";
+
+                let separador = document.createElement("div");
+                separador.classList.add("mt-2");
+
+                let observaciones = document.createElement("textarea");
+                observaciones.name = "observaciones_bolo";
+                observaciones.id = "observaciones_bolo";
+                observaciones.rows = 3;
+                observaciones.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3",
+                    "py-1.5", "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1",
+                    "outline-gray-300", "placeholder:text-gray-400", "focus:outline-2",
+                    "focus:-outline-offset-2", "focus:outline-indigo-600", "sm:text-sm/6");
+
+                separador.appendChild(observaciones);
+                contenedorObservaciones.appendChild(label);
+                contenedorObservaciones.appendChild(separador);
+                inicioCicloBtn.parentElement.parentElement.parentElement.appendChild(contenedorObservaciones);
+            } else if (document.getElementById("contenedorObservaciones")) {
+                document.getElementById("contenedorObservaciones").remove();
             }
-        }
-    }
-    
-    function mostrarBolo() {
-        let contenedorBolo = document.getElementById("contenedorBolo");
-        
-        if (inicioCicloBtn.value === "No") {
-            console.log("boloDIV");
-            let label = document.createElement("label");
-            label.setAttribute("for", "bolo");
-            label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
-            label.textContent = "Bolo";
-    
-            let separador = document.createElement("div");
-            separador.classList.add("mt-2");
-    
-            let selectorBolo = document.createElement("select");
-            selectorBolo.name = "bolo";
-            selectorBolo.id = "bolo";
-            selectorBolo.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3", "py-1.5",
-                "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1", "outline-gray-300",
-                "placeholder:text-gray-400", "focus:outline-2", "focus:-outline-offset-2",
-                "focus:outline-indigo-600", "sm:text-sm/6");
-    
-            let eleccion = document.createElement("option");
-            eleccion.value = 10;
-            eleccion.textContent = eleccion.value;
-    
-            selectorBolo.appendChild(eleccion);
-            separador.appendChild(selectorBolo);
-            contenedorBolo.appendChild(label);
-            contenedorBolo.appendChild(separador);
         }
     }
 })
 
 
-    
+
 
 
 
