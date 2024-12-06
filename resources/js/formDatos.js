@@ -382,10 +382,10 @@ main.addEventListener('click', (e) => {
             const formDatas = new FormData(formDatos)
             const data = Object.fromEntries(formDatas.entries());
             console.log(data);
-            let compostera = await consultarCompostera(data.compostera);
-            let ciclo = await consultarCiclos();
-
             try {
+                let compostera = await consultarCompostera(data.compostera);
+                let ciclo = await consultarCiclos();
+
                 if (!ciclo) {
                     if (data.compostera == 1 && data.inicio_ciclo == 1) {
                         let bolo = await crearBolo();
@@ -411,23 +411,15 @@ main.addEventListener('click', (e) => {
                 alert('Hubo un error al insertar los datos.');
             }
 
-            async function crearRegistro(ciclo) {
-                // Insertar en "registros"
-                try {
-                    const registroResponse = await fetch('/api/registros', {
-                        method: 'POST',
-                        headers: option,
-                        body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, ciclo_id: ciclo.id, user_id: 1, compostera_id: data.compostera })
-                    });
-
-                    let registro_promise = await registroResponse.json();
-                    let registro = registro_promise.data;
-                    console.log(registro_promise);
-                } catch (error) {
-                    console.error('Error durante la inserción:', error);
-                    alert('Hubo un error al insertar los datos.');
-                }
-
+            async function crearBolo() {
+                // Insertar en "bolo"
+                const boloResponse = await fetch('/api/bolos', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({ observaciones: data.observaciones_bolo })
+                });
+                let bolo_promise = await boloResponse.json();
+                return bolo_promise.data;
             }
 
             async function crearCiclo(bolo) {
@@ -441,15 +433,76 @@ main.addEventListener('click', (e) => {
                 return ciclo_promise.data;
             }
 
-            async function crearBolo() {
-                // Insertar en "bolo"
-                const boloResponse = await fetch('/api/bolos', {
+            async function crearRegistro(ciclo) {
+                // Insertar en "registros"
+                const registroResponse = await fetch('/api/registros', {
                     method: 'POST',
                     headers: option,
-                    body: JSON.stringify({ observaciones: data.observaciones_bolo })
+                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, ciclo_id: ciclo.id, user_id: 1, compostera_id: data.compostera })
                 });
-                let bolo_promise = await boloResponse.json();
-                return bolo_promise.data;
+
+                let registro_promise = await registroResponse.json();
+                let registro = registro_promise.data;
+                crearAntes(registro);
+                crearDurante(registro);
+                crearDespues(registro);
+            }
+
+            async function crearAntes(registro) {
+                // Insertar en "antes"
+                const antesResponse = await fetch('/api/antes', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({
+                        temperatura_ambiental: data.temperatura_ambiental,
+                        temperatura_compostera: data.temperatura_compostera,
+                        nivel_llenado: data.nivel_llenado_antes,
+                        olor: data.olor,
+                        presencia_insectos: data.presencia_insectos,
+                        humedad: data.humedad,
+                        fotografias: data.fotografias_antes.webkitRelativePath,
+                        observaciones: data.observaciones_antes,
+                        registro_id: registro.id
+                    })
+                });
+                let antes_promise = await antesResponse.json();
+                let antes = antes_promise.data;
+            }
+
+            async function crearDurante(registro) {
+                // Insertar en "durante"
+                const duranteResponse = await fetch('/api/durante', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({
+                        riego: data.riego,
+                        revolver: data.revolver,
+                        aporte_verde: data.aporte_verde,
+                        tipo_aporte_verde: data.tipo_aporte_verde,
+                        aporte_seco: data.aporte_seco,
+                        fotografias: data.fotografias_durante.webkitRelativePath,
+                        observaciones: data.observaciones_durante,
+                        registro_id: registro.id
+                    })
+                });
+                let durante_promise = await duranteResponse.json();
+                let durante = durante_promise.data;
+            }
+
+            async function crearDespues(registro) {
+                // Insertar en "despues"
+                const despuesResponse = await fetch('/api/despues', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({
+                        nivel_llenado: data.nivel_llenado_despues,
+                        fotografias: data.fotografias_despues.webkitRelativePath,
+                        observaciones: data.observaciones_despues,
+                        registro_id: registro.id
+                    })
+                });
+                let despues_promise = await despuesResponse.json();
+                let despues = despues_promise.data;
             }
         }
 
