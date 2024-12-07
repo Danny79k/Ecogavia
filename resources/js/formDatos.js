@@ -1,6 +1,12 @@
 const main = document.querySelector(".main")
 
 const botonInsertar = document.querySelector(".insertarRegistro");
+const token = sessionStorage.getItem('sessionToken');
+
+const option = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+}
 
 main.addEventListener('click', (e) => {
     if (e.target.classList.contains('boloId')) {
@@ -23,7 +29,7 @@ main.addEventListener('click', (e) => {
                                                 class="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                                 <select name="compostera" id="compostera"
                                                     class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
-                                                    <option>${e.target.textContent}</option>
+                                                    <option value="${e.target.textContent}">${e.target.textContent}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -330,50 +336,174 @@ main.addEventListener('click', (e) => {
 
         inicioCicloBtn.addEventListener('input', mostrarObservacionesBolo);
 
-        consultarDatos();
         mostrarObservacionesBolo();
 
-        async function consultarDatos() {
-            //campo booleano en ciclos y ENUM en bolos
+        async function consultarCompostera(id) {
+            let compostera = await fetch(`/api/composteras/${id}`, {
+                method: 'GET',
+                headers: option
+            }).then((response) => response.json())
+                .then((objeto) => objeto.data);
+            console.log(compostera);
+            return compostera;
+        }
+
+        async function consultarCiclos() {
+            let consultaCiclos = await fetch('/api/ciclos', {
+                method: 'GET',
+                headers: option
+            }).then((response) => response.json())
+                .then((objeto) => objeto.data);
+            let ciclo = consultaCiclos.find(ciclo => ciclo.terminado == 0 && ciclo.compostera_id == composteraBtn.value);
+            console.log(ciclo);
+            return ciclo;
+        }
+
+        async function consultarBolo(compostera) {
+            let consultaBolos = await fetch('/api/bolos', {
+                method: 'GET',
+                headers: option
+            }).then((response) => response.json())
+                .then((objeto) => objeto.data);
+
+            //el campo terminado de ciclos no se tiene en cuenta *ARREGLAR*
+            let bolo = {}
+            if (compostera.codigo == 'c-22') {
+                bolo = consultaBolos.find(bolo => bolo.ciclo1 == 1 && bolo.ciclo2 == 0);
+            } else if (compostera.codigo == 'c-33') {
+                bolo = consultaBolos.find(bolo => bolo.ciclo1 == 1 && bolo.ciclo2 == 1 && bolo.ciclo3 == 0);
+            }
+
+            console.log(bolo);
+            return bolo;
         }
 
         async function insertarDatos() {
             const formDatas = new FormData(formDatos)
             const data = Object.fromEntries(formDatas.entries());
             console.log(data);
-
             try {
-                // Insertar en "registros"
-                const registroResponse = await fetch('/api/registros', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, compostera_id: data.compostera })
-                });
-                const registro = await registroResponse.json();
+                let compostera = await consultarCompostera(data.compostera);
+                let ciclo = await consultarCiclos();
+
+                if (!ciclo) {
+                    if (data.compostera == 1 && data.inicio_ciclo == 1) {
+                        let bolo = await crearBolo();
+                        console.log(bolo);
+
+                        ciclo = await crearCiclo(bolo);
+                        console.log(ciclo);
+
+                    } else if (data.compostera != 1 && data.inicio_ciclo == 1) {
+                        let bolo = await consultarBolo(compostera);
+
+                        ciclo = await crearCiclo(bolo);
+                        console.log(ciclo);
+                    }
+
+                    crearRegistro(ciclo);
+                } else if (ciclo && data.inicio_ciclo == 0) {
+                    crearRegistro(ciclo);
+                }
+
             } catch (error) {
                 console.error('Error durante la inserción:', error);
                 alert('Hubo un error al insertar los datos.');
             }
-        }
 
-        async function crearCiclo() {
-            // Insertar en "ciclo"
-            const cicloResponse = await fetch('/api/ciclos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ /*bolo_id:*/ })
-            });
-            const ciclo = await cicloResponse.json();
-        }
+            async function crearBolo() {
+                // Insertar en "bolo"
+                const boloResponse = await fetch('/api/bolos', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({ observaciones: data.observaciones_bolo })
+                });
+                let bolo_promise = await boloResponse.json();
+                return bolo_promise.data;
+            }
 
-        async function crearBolo() {
-            // Insertar en "bolo"
-            const boloResponse = await fetch('/api/bolos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ observaciones: data.observaciones_bolo })
-            });
-            const bolo = await boloResponse.json();
+            async function crearCiclo(bolo) {
+                // Insertar en "ciclo"
+                const cicloResponse = await fetch('/api/ciclos', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({ bolo_id: bolo.id, compostera_id: data.compostera })
+                });
+                let ciclo_promise = await cicloResponse.json();
+                return ciclo_promise.data;
+            }
+
+            async function crearRegistro(ciclo) {
+                // Insertar en "registros"
+                const registroResponse = await fetch('/api/registros', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, ciclo_id: ciclo.id, user_id: 1, compostera_id: data.compostera })
+                });
+
+                let registro_promise = await registroResponse.json();
+                let registro = registro_promise.data;
+                crearAntes(registro);
+                crearDurante(registro);
+                crearDespues(registro);
+            }
+
+            async function crearAntes(registro) {
+                // Insertar en "antes"
+                const antesResponse = await fetch('/api/antes', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({
+                        temperatura_ambiental: data.temperatura_ambiental,
+                        temperatura_compostera: data.temperatura_compostera,
+                        nivel_llenado: data.nivel_llenado_antes,
+                        olor: data.olor,
+                        presencia_insectos: data.presencia_insectos,
+                        humedad: data.humedad,
+                        fotografias: data.fotografias_antes.webkitRelativePath,
+                        observaciones: data.observaciones_antes,
+                        registro_id: registro.id
+                    })
+                });
+                let antes_promise = await antesResponse.json();
+                let antes = antes_promise.data;
+            }
+
+            async function crearDurante(registro) {
+                // Insertar en "durante"
+                const duranteResponse = await fetch('/api/durante', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({
+                        riego: data.riego,
+                        revolver: data.revolver,
+                        aporte_verde: data.aporte_verde,
+                        tipo_aporte_verde: data.tipo_aporte_verde,
+                        aporte_seco: data.aporte_seco,
+                        fotografias: data.fotografias_durante.webkitRelativePath,
+                        observaciones: data.observaciones_durante,
+                        registro_id: registro.id
+                    })
+                });
+                let durante_promise = await duranteResponse.json();
+                let durante = durante_promise.data;
+            }
+
+            async function crearDespues(registro) {
+                // Insertar en "despues"
+                const despuesResponse = await fetch('/api/despues', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({
+                        nivel_llenado: data.nivel_llenado_despues,
+                        fotografias: data.fotografias_despues.webkitRelativePath,
+                        observaciones: data.observaciones_despues,
+                        registro_id: registro.id
+                    })
+                });
+                let despues_promise = await despuesResponse.json();
+                let despues = despues_promise.data;
+            }
         }
 
         function mostrarObservacionesBolo() {
