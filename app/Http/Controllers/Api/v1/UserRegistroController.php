@@ -9,7 +9,7 @@ use App\Models\User;
 
 class UserRegistroController extends RelationController
 {
-    use DisableAuthorization;
+    // use DisableAuthorization;
     protected $model = User::class;
 
     protected $relation = 'registros';
