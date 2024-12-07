@@ -11,7 +11,7 @@ class DespuesController extends Controller
 {
     //
 
-    use DisableAuthorization;
+    // use DisableAuthorization;
 
     protected $model = Despues::class;
 }
