@@ -17,11 +17,11 @@ return new class extends Migration
             $table->integer('temperatura_ambiental');
             $table->integer('temperatura_compostera');
             $table->integer('nivel_llenado');
-            $table->String('olor');
+            $table->String('olor')->nullable();
             $table->boolean('presencia_insectos');
             $table->enum('humedad', ['escasa', 'buena', 'exceso']);
-            $table->string('fotografias');
-            $table->string('observaciones');
+            $table->string('fotografias')->nullable();
+            $table->string('observaciones')->nullable();
             $table->foreignId('registro_id')->on('registros');
         });
     }
