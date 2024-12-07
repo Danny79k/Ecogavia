@@ -10,6 +10,6 @@ use Orion\Concerns\DisablePagination;
 
 class BoloController extends Controller
 {
-    use DisableAuthorization, DisablePagination;
+    use DisablePagination;
     protected $model = Bolo::class;
 }

@@ -2,10 +2,11 @@
 
 namespace App\Policies;
 
+use App\Models\Centro;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class UserPolicy
+class CentroPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,7 +19,7 @@ class UserPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool
+    public function view(User $user, Centro $centro): bool
     {
         return true;
     }
@@ -37,7 +38,7 @@ class UserPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, User $model): bool
+    public function update(User $user, Centro $centro): bool
     {
         if ($user->admin) {
             return true;
@@ -48,18 +49,18 @@ class UserPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user, Centro $centro): bool
     {
         if ($user->admin) {
             return true;
         }
-        return false;
+        return false;           
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool
+    public function restore(User $user, Centro $centro): bool
     {
         return false;
     }
@@ -67,13 +68,8 @@ class UserPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool
+    public function forceDelete(User $user, Centro $centro): bool
     {
         return false;
-    }
-
-    public function administrate(User $user)
-    {
-        return $user->admin == true;
     }
 }

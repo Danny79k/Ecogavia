@@ -11,7 +11,7 @@ use Orion\Http\Controllers\RelationController;
 
 class BoloCicloController extends RelationController
 {
-    use DisableAuthorization, DisablePagination;
+    use DisablePagination;
 
     protected $model = Bolo::class;
 
