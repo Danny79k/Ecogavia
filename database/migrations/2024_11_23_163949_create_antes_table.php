@@ -19,11 +19,10 @@ return new class extends Migration
             $table->integer('nivel_llenado');
             $table->String('olor');
             $table->boolean('presencia_insectos');
-            $table->enum('humedad', ['escasa', 'buena', 'exceso' ]);
+            $table->enum('humedad', ['escasa', 'buena', 'exceso']);
             $table->string('fotografias');
             $table->string('observaciones');
             $table->foreignId('registro_id')->on('registros');
-
         });
     }
 

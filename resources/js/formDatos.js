@@ -109,8 +109,8 @@ main.addEventListener('click', (e) => {
                                         <div class="mt-2">
                                             <select name="presencia_insectos" id="presencia_insectos"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Si">Si</option>
-                                                <option value="No">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="0">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -121,9 +121,9 @@ main.addEventListener('click', (e) => {
                                         <div class="mt-2">
                                             <select name="humedad" id="humedad"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Baja">Baja</option>
-                                                <option value="Media">Media</option>
-                                                <option value="Alta">Alta</option>
+                                                <option value="escasa">Escasa</option>
+                                                <option value="buena">Buena</option>
+                                                <option value="exceso">Exceso</option>
                                             </select>
                                         </div>
                                     </div>
@@ -177,8 +177,8 @@ main.addEventListener('click', (e) => {
                                         <div class="mt-2">
                                             <select name="riego" id="riego"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Si">Si</option>
-                                                <option value="No">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="0">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -189,8 +189,8 @@ main.addEventListener('click', (e) => {
                                         <div class="mt-2">
                                             <select name="revolver" id="revolver"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Si">Si</option>
-                                                <option value="No">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="0">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -326,7 +326,6 @@ main.addEventListener('click', (e) => {
             </div>
     `
 
-
         const inicioCicloBtn = document.getElementById("inicio_ciclo");
         const composteraBtn = document.getElementById("compostera");
         const formDatosBoton = document.querySelector(".submit")
@@ -383,27 +382,28 @@ main.addEventListener('click', (e) => {
             const data = Object.fromEntries(formDatas.entries());
             console.log(data);
             try {
+                const userId = document.querySelector("span.userId").textContent;
                 let compostera = await consultarCompostera(data.compostera);
                 let ciclo = await consultarCiclos();
 
-                if (!ciclo) {
-                    if (data.compostera == 1 && data.inicio_ciclo == 1) {
+                if (!ciclo && data.inicio_ciclo == 1) {
+                    if (data.compostera == 1) {
                         let bolo = await crearBolo();
                         console.log(bolo);
 
                         ciclo = await crearCiclo(bolo);
                         console.log(ciclo);
 
-                    } else if (data.compostera != 1 && data.inicio_ciclo == 1) {
+                    } else if (data.compostera != 1) {
                         let bolo = await consultarBolo(compostera);
 
                         ciclo = await crearCiclo(bolo);
                         console.log(ciclo);
                     }
 
-                    crearRegistro(ciclo);
+                    crearRegistro(ciclo, userId);
                 } else if (ciclo && data.inicio_ciclo == 0) {
-                    crearRegistro(ciclo);
+                    crearRegistro(ciclo, userId);
                 }
 
             } catch (error) {
@@ -433,12 +433,12 @@ main.addEventListener('click', (e) => {
                 return ciclo_promise.data;
             }
 
-            async function crearRegistro(ciclo) {
+            async function crearRegistro(ciclo, userId) {
                 // Insertar en "registros"
                 const registroResponse = await fetch('/api/registros', {
                     method: 'POST',
                     headers: option,
-                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, ciclo_id: ciclo.id, user_id: 1, compostera_id: data.compostera })
+                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, ciclo_id: ciclo.id, user_id: userId, compostera_id: data.compostera })
                 });
 
                 let registro_promise = await registroResponse.json();
@@ -460,12 +460,13 @@ main.addEventListener('click', (e) => {
                         olor: data.olor,
                         presencia_insectos: data.presencia_insectos,
                         humedad: data.humedad,
-                        fotografias: data.fotografias_antes.webkitRelativePath,
+                        fotografias: 'data.fotografias_antes.webkitRelativePath',
                         observaciones: data.observaciones_antes,
                         registro_id: registro.id
                     })
                 });
                 let antes_promise = await antesResponse.json();
+                console.log(antes_promise);
                 let antes = antes_promise.data;
             }
 
@@ -480,12 +481,13 @@ main.addEventListener('click', (e) => {
                         aporte_verde: data.aporte_verde,
                         tipo_aporte_verde: data.tipo_aporte_verde,
                         aporte_seco: data.aporte_seco,
-                        fotografias: data.fotografias_durante.webkitRelativePath,
+                        fotografias: 'data.fotografias_durante.webkitRelativePath',
                         observaciones: data.observaciones_durante,
                         registro_id: registro.id
                     })
                 });
                 let durante_promise = await duranteResponse.json();
+                console.log(durante_promise);
                 let durante = durante_promise.data;
             }
 
@@ -496,12 +498,13 @@ main.addEventListener('click', (e) => {
                     headers: option,
                     body: JSON.stringify({
                         nivel_llenado: data.nivel_llenado_despues,
-                        fotografias: data.fotografias_despues.webkitRelativePath,
+                        fotografias: 'data.fotografias_despues.webkitRelativePath',
                         observaciones: data.observaciones_despues,
                         registro_id: registro.id
                     })
                 });
                 let despues_promise = await despuesResponse.json();
+                console.log(despues_promise);
                 let despues = despues_promise.data;
             }
         }
@@ -515,7 +518,7 @@ main.addEventListener('click', (e) => {
                 let label = document.createElement("label");
                 label.setAttribute("for", "observaciones_bolo");
                 label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
-                label.textContent = "Observaciones";
+                label.textContent = "Observaciones del bolo";
 
                 let separador = document.createElement("div");
                 separador.classList.add("mt-2");
