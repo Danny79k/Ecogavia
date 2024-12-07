@@ -9,7 +9,7 @@ use App\Models\Durante;
 
 class DuranteController extends Controller
 {
-    use DisableAuthorization;
+    // use DisableAuthorization;
 
     protected $model = Durante::class;
 }
