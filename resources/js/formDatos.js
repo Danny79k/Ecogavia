@@ -373,6 +373,7 @@ main.addEventListener('click', (e) => {
                 bolo = consultaBolos.find(bolo => bolo.ciclo1 == 1 && bolo.ciclo2 == 1 && bolo.ciclo3 == 0);
             }
 
+            if (bolo == undefined) alert('El bolo no ha terminado el ciclo anterior');
             console.log(bolo);
             return bolo;
         }
@@ -413,6 +414,9 @@ main.addEventListener('click', (e) => {
                     crearRegistro(ciclo, userId);
                 } else if (ciclo && data.inicio_ciclo == 0) {
                     crearRegistro(ciclo, userId);
+                } else {
+                    if (ciclo && data.inicio_ciclo == 1) alert('Ya existe un ciclo activo en esta compostera');
+                    else if (!ciclo && data.inicio_ciclo == 0) alert('Todavía no se ha iniciado un ciclo en esta compostera');
                 }
 
             } catch (error) {
