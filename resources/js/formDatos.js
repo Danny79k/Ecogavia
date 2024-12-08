@@ -18,7 +18,7 @@ main.addEventListener('click', (e) => {
                         <div class="space-y-12">
                             <div class="border-b border-gray-900/10 pb-12">
                                 <h2 class="text-base/7 font-semibold text-gray-900">Añadir registro</h2>
-                                <p class="mt-1 text-sm/6 text-gray-600">Complete el siguiente formulario.</p>
+                                <p class="mt-1 text-sm/6 text-gray-600">Complete el siguiente formulario. El * indica los campos obligatorios</p>
 
                                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div class="sm:col-span-3">
@@ -65,7 +65,7 @@ main.addEventListener('click', (e) => {
                                     <div class="sm:col-span-3">
                                         <label for="temperatura_ambiental"
                                             class="block text-sm/6 font-medium text-gray-900">Temperatura
-                                            ambiental</label>
+                                            ambiental*</label>
                                         <div class="mt-2">
                                             <input type="number" name="temperatura_ambiental" id="temperatura_ambiental"
                                                 autocomplete="given-name"
@@ -76,7 +76,7 @@ main.addEventListener('click', (e) => {
                                     <div class="sm:col-span-3">
                                         <label for="temperatura_compostera"
                                             class="block text-sm/6 font-medium text-gray-900">Temperatura
-                                            compostera</label>
+                                            compostera*</label>
                                         <div class="mt-2">
                                             <input type="number" name="temperatura_compostera"
                                                 id="temperatura_compostera" autocomplete="given-name"
@@ -86,7 +86,7 @@ main.addEventListener('click', (e) => {
 
                                     <div class="sm:col-span-3">
                                         <label for="nivel_llenado_antes"
-                                            class="block text-sm/6 font-medium text-gray-900">Nivel llenado</label>
+                                            class="block text-sm/6 font-medium text-gray-900">Nivel llenado*</label>
                                         <div class="mt-2">
                                             <input type="number" name="nivel_llenado_antes" id="nivel_llenado_antes"
                                                 autocomplete="given-name"
@@ -270,7 +270,7 @@ main.addEventListener('click', (e) => {
                                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div class="col-span-full">
                                         <label for="nivel_llenado_despues"
-                                            class="block text-sm/6 font-medium text-gray-900">Nivel llenado</label>
+                                            class="block text-sm/6 font-medium text-gray-900">Nivel llenado*</label>
                                         <div class="mt-2">
                                             <input type="number" name="nivel_llenado_despues" id="nivel_llenado_despues"
                                                 autocomplete="given-name"
@@ -381,6 +381,15 @@ main.addEventListener('click', (e) => {
             const formDatas = new FormData(formDatos)
             const data = Object.fromEntries(formDatas.entries());
             console.log(data);
+            const camposRequeridos = [
+                data.observaciones_bolo, data.temperatura_ambiental,
+                data.temperatura_compostera, data.nivel_llenado_antes, data.nivel_llenado_despues];
+
+            if (!camposRequeridos.every((campo) => campo != "")) {
+                alert('Faltan campos obligatorios por llenar');
+                return;
+            }
+
             try {
                 const userId = document.querySelector("span.userId").textContent;
                 let compostera = await consultarCompostera(data.compostera);
@@ -460,7 +469,7 @@ main.addEventListener('click', (e) => {
                         olor: data.olor,
                         presencia_insectos: data.presencia_insectos,
                         humedad: data.humedad,
-                        fotografias: 'data.fotografias_antes.webkitRelativePath',
+                        fotografias: data.fotografias_antes.webkitRelativePath,
                         observaciones: data.observaciones_antes,
                         registro_id: registro.id
                     })
@@ -481,7 +490,7 @@ main.addEventListener('click', (e) => {
                         aporte_verde: data.aporte_verde,
                         tipo_aporte_verde: data.tipo_aporte_verde,
                         aporte_seco: data.aporte_seco,
-                        fotografias: 'data.fotografias_durante.webkitRelativePath',
+                        fotografias: data.fotografias_durante.webkitRelativePath,
                         observaciones: data.observaciones_durante,
                         registro_id: registro.id
                     })
@@ -498,7 +507,7 @@ main.addEventListener('click', (e) => {
                     headers: option,
                     body: JSON.stringify({
                         nivel_llenado: data.nivel_llenado_despues,
-                        fotografias: 'data.fotografias_despues.webkitRelativePath',
+                        fotografias: data.fotografias_despues.webkitRelativePath,
                         observaciones: data.observaciones_despues,
                         registro_id: registro.id
                     })
@@ -518,7 +527,7 @@ main.addEventListener('click', (e) => {
                 let label = document.createElement("label");
                 label.setAttribute("for", "observaciones_bolo");
                 label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
-                label.textContent = "Observaciones del bolo";
+                label.textContent = "Observaciones del bolo*";
 
                 let separador = document.createElement("div");
                 separador.classList.add("mt-2");
