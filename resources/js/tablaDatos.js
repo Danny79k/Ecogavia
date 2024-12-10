@@ -433,6 +433,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
                     let thFechaFin = document.createElement("th")
                     let thCreadoCiclo = document.createElement("th")
                     let thActualizadoCiclo = document.createElement("th")
+                    let thEstado = document.createElement("th");
 
                     thIdCiclo.innerHTML = "id"
                     thNCiclo.innerHTML = "numero ciclo"
@@ -441,6 +442,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
                     thFechaFin.innerHTML = "fecha fin"
                     thCreadoCiclo.innerHTML = "creado"
                     thActualizadoCiclo.innerHTML = "actualizado"
+                    thEstado.innerHTML = "estado"
 
                     trColumnaCiclo.appendChild(thIdCiclo)
                     trColumnaCiclo.appendChild(thNCiclo)
@@ -449,7 +451,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
                     trColumnaCiclo.appendChild(thFechaFin)
                     trColumnaCiclo.appendChild(thCreadoCiclo)
                     trColumnaCiclo.appendChild(thActualizadoCiclo)
-
+                    trColumnaCiclo.appendChild(thEstado)
 
                     theadCiclo.appendChild(trColumnaCiclo)
                     tableCiclo.appendChild(theadCiclo)
@@ -476,7 +478,8 @@ document.addEventListener('DOMContentLoaded', async (e) => {
                     celdaCreado.classList.add("celdaCreado");
                     let celdaActualizado = document.createElement("td");
                     celdaActualizado.classList.add("celdaActualizado");
-
+                    let celdaEstado = document.createElement("td");
+                    celdaEstado.classList.add("celdaEstado");
 
                     celdaIdCiclo.innerHTML = registroCiclo.data.id
                     celdaNCiclo.textContent = n++
@@ -485,6 +488,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
                     celdaFinCiclo.innerHTML = registroCiclo.data.fecha_fin;
                     celdaCreado.textContent = registroCiclo.data.created_at.substr(0, 10);
                     celdaActualizado.textContent = registroCiclo.data.updated_at.substr(0, 10);
+                    celdaEstado.innerHTML = `<span>Terminado</span>`;
 
                     rowCiclo.appendChild(celdaIdCiclo);
                     rowCiclo.appendChild(celdaNCiclo);
@@ -493,6 +497,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
                     rowCiclo.appendChild(celdaFinCiclo);
                     rowCiclo.appendChild(celdaCreado);
                     rowCiclo.appendChild(celdaActualizado);
+                    rowCiclo.appendChild(celdaEstado);
 
                     tBodyCiclo.appendChild(rowCiclo)
 
