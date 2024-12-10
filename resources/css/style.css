@@ -1,4 +1,8 @@
-.buttonIdUser, .buttonId, .boloId, .idCiclo {
+.buttonIdUser,
+.buttonId,
+.boloId,
+.idCiclo,
+.buttonStatusInUse {
 
     background-color: red !important;
     border-radius: 20% !important;
@@ -7,7 +11,7 @@
 
 h1 {
     font-size: 60px !important;
-    color:rgb(80, 80, 80) !important;
+    color: rgb(80, 80, 80) !important;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: 100;
     border-bottom: 5cm;
@@ -15,4 +19,10 @@ h1 {
     display: inline;
     padding-left: 35px;
     padding-right: 35px;
+}
+
+.buttonStatusFree {
+    background-color: green !important;
+    border-radius: 20% !important;
+    padding: 5px;
 }
