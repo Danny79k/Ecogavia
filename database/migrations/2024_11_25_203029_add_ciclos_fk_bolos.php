@@ -11,12 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ciclos', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->date('fecha_inicio')->default('2024-12-05');
-            $table->date('fecha_fin')->default('2024-12-05');
-            $table->boolean('terminado')->default(0);
+        Schema::table('ciclos', function (Blueprint $table) {
+            $table->foreignId('bolo_id')->on('bolos');
         });
     }
 
@@ -25,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ciclos');
+        Schema::table('ciclos', function (Blueprint $table) {
+            $table->dropColumn('bolo_id');
+        });
     }
 };

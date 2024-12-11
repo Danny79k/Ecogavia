@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('bolos', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('observaciones');
+            $table->timestamps();
+            $table->boolean('terminado')->default(0);
+            $table->boolean('ciclo1')->default(0);
+            $table->boolean('ciclo2')->default(0);
+            $table->boolean('ciclo3')->default(0);
         });
     }
 

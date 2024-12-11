@@ -9,7 +9,7 @@ use App\Models\Registro;
 
 class RegistroAntesController extends RelationController
 {
-    use DisableAuthorization;
+    // use DisableAuthorization;
 
     protected $model = Registro::class;
 

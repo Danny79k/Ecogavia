@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Despues extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nivel_llenado',
+        'fotografias',
+        'observaciones',
+        'registro_id',
+    ];
 }

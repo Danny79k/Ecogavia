@@ -9,6 +9,6 @@ use Orion\Concerns\DisableAuthorization;
 
 class CentroController extends Controller
 {
-    use DisableAuthorization;
+    // use DisableAuthorization;
     protected $model = Centro::class;
 }

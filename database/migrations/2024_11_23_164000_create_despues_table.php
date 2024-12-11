@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->integer('nivel_llenado');
-            $table->string('fotografias');
-            $table->string('observaciones');
+            $table->string('fotografias')->nullable();
+            $table->string('observaciones')->nullable();
             $table->foreignId('registro_id')->on('registros');
         });
     }

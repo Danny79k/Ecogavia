@@ -13,14 +13,10 @@ use App\Policies\RegistroPolicy;
 
 class RegistroController extends Controller
 {
-    use DisableAuthorization, DisablePagination;
+    use DisablePagination;
 
     protected $model = Registro::class;
 
     protected $policy = RegistroPolicy::class;
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:sanctum');
-    // }
     
 }
