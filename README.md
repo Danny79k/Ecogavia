@@ -18,6 +18,11 @@
 - php artisan key:generate
 - php artisan migrate
 
+## acceder a la aplicacion
+
+user@user.com 123456789 -- para usuarios estandar
+admin@admin.com 123456789 -- para usuarios administradores
+
 ## depsliegue automatizado
 
 para el despliegue automatizado solamente se necesita hacer un push con los cambios a la master y automaticamente los cambios seran desplegados en su VPS o cualquier otro medio de depsliegue se este utilizando
