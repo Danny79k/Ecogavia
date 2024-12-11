@@ -37,7 +37,7 @@ class CicloPolicy
      */
     public function update(User $user, Ciclo $ciclo): bool
     {
-        return false;
+        return true;
     }
 
     /**
