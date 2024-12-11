@@ -20,8 +20,8 @@
 
 ## acceder a la aplicacion
 
-user@user.com 123456789 -- para usuarios estandar
-admin@admin.com 123456789 -- para usuarios administradores
+- user@user.com 123456789 -- para usuarios estandar
+- admin@admin.com 123456789 -- para usuarios administradores
 
 ## depsliegue automatizado
 
