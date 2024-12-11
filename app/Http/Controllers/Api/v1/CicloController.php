@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Requests\CicloRequest;
 use Orion\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Ciclo;
@@ -15,4 +16,7 @@ class CicloController extends Controller
     protected $model = Ciclo::class;
 
     protected $policy = CicloPolicy::class;
+
+    protected $request = CicloRequest::class;
+
 }
