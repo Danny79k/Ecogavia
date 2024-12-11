@@ -1,11 +1,26 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
+[![Build Status](https://cdn.prod.website-files.com/5e0f1144930a8bc8aace526c/65dd9eb5aaca434fac4f1c7c_Build-Passing-brightgreen.svg)]()
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
+
+
+## instalacion del proyecto
+
+git clone 'enlace proyecto>'
+npm install
+composert install
+cp .env.example .env [se tendra se rellenar el .env con los datos de la bd]
+php artisan key:generate
+php artisan migrate
+
+## depsliegue automatizado
+
+para el despliegue automatizado solamente se necesita hacer un push con los cambios a la master y automaticamente los cambios seran desplegados en su VPS o cualquier otro medio de depsliegue se este utilizando
 
 ## About Laravel
 
