@@ -16,5 +16,5 @@ jobs:
           host: 200.234.228.166
           port: 2222
           username: danny
-          key: ${{ secrets.ECOGAVIAs }}
+          key: ${{ secrets.ECOGAVIA }}
           script: "cd /var/www/html/Ecogavia; git pull origin master; npm run build; sudo service php8.3-fpm reload"
