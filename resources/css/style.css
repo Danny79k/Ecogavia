@@ -2,7 +2,8 @@
 .buttonId,
 .boloId,
 .idCiclo,
-.buttonStatusInUse {
+.statusInUse,
+.buttonFinish {
 
     background-color: red !important;
     border-radius: 20% !important;
@@ -21,7 +22,7 @@ h1 {
     padding-right: 35px;
 }
 
-.buttonStatusFree {
+.statusFree {
     background-color: green !important;
     border-radius: 20% !important;
     padding: 5px;
