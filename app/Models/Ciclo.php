@@ -12,6 +12,7 @@ class Ciclo extends Model
     protected $fillable = [
         'bolo_id',
         'compostera_id',
+        'terminado',
     ];
 
     public function registros()
