@@ -14,8 +14,9 @@ return new class extends Migration
         Schema::create('ciclos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->date('fecha_inicio');
-            $table->date('fecha_fin');
+            $table->date('fecha_inicio')->default('2024-12-05');
+            $table->date('fecha_fin')->default('2024-12-05');
+            $table->boolean('terminado')->default(0);
         });
     }
 

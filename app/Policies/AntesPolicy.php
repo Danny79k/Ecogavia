@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Registro;
+use App\Models\Antes;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class RegistroPolicy
+class AntesPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class RegistroPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Registro $registro): bool
+    public function view(User $user, Antes $antes): bool
     {
         return true;
     }
@@ -29,29 +29,29 @@ class RegistroPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+       return true;
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Registro $registro): bool
+    public function update(User $user, Antes $antes): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Registro $registro): bool
+    public function delete(User $user, Antes $antes): bool
     {
-        return false;
+        return true;
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Registro $registro): bool
+    public function restore(User $user, Antes $antes): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class RegistroPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Registro $registro): bool
+    public function forceDelete(User $user, Antes $antes): bool
     {
         return false;
     }

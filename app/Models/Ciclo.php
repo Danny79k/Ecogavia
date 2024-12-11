@@ -9,7 +9,19 @@ class Ciclo extends Model
 {
     use HasFactory;
 
-    public function registros() {
+    protected $fillable = [
+        'bolo_id',
+        'compostera_id',
+        'terminado',
+    ];
+
+    public function registros()
+    {
         return $this->hasMany(Registro::class);
-    } 
+    }
+
+    public function compostera()
+    {
+        return $this->belongsTo(Compostera::class);
+    }
 }

@@ -1,9 +1,16 @@
 const main = document.querySelector(".main")
 
-const botonInsertar = document.querySelector(".insertarRegistro")
+const botonInsertar = document.querySelector(".insertarRegistro");
+const token = sessionStorage.getItem('sessionToken');
 
-botonInsertar.addEventListener('click', () => {
-    main.innerHTML = `
+const option = {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+}
+
+main.addEventListener('click', (e) => {
+    if (e.target.classList.contains('boloId')) {
+        main.innerHTML = `
         <div>
             <div id="main">
                 <div class="bg-white shadow p-5 mt-5 max-w-7xl mx-auto rounded-lg">
@@ -11,7 +18,7 @@ botonInsertar.addEventListener('click', () => {
                         <div class="space-y-12">
                             <div class="border-b border-gray-900/10 pb-12">
                                 <h2 class="text-base/7 font-semibold text-gray-900">Añadir registro</h2>
-                                <p class="mt-1 text-sm/6 text-gray-600">Complete el siguiente formulario.</p>
+                                <p class="mt-1 text-sm/6 text-gray-600">Complete el siguiente formulario. El * indica los campos obligatorios</p>
 
                                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div class="sm:col-span-3">
@@ -22,9 +29,7 @@ botonInsertar.addEventListener('click', () => {
                                                 class="flex items-center rounded-md bg-white pl-3 outline outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
                                                 <select name="compostera" id="compostera"
                                                     class="block min-w-0 grow py-1.5 pl-1 pr-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline focus:outline-0 sm:text-sm/6">
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
+                                                    <option value="${e.target.textContent}">${e.target.textContent}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -44,14 +49,11 @@ botonInsertar.addEventListener('click', () => {
                                         <div class="mt-2">
                                             <select name="inicio_ciclo" id="inicio_ciclo"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Si">Si</option>
-                                                <option value="No">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="0">No</option>
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="sm:col-span-3" id="contenedorCiclo"></div>
-                                    <div class="sm:col-span-3" id="contedorBolo"></div>
                                 </div>
                             </div>
 
@@ -63,7 +65,7 @@ botonInsertar.addEventListener('click', () => {
                                     <div class="sm:col-span-3">
                                         <label for="temperatura_ambiental"
                                             class="block text-sm/6 font-medium text-gray-900">Temperatura
-                                            ambiental</label>
+                                            ambiental*</label>
                                         <div class="mt-2">
                                             <input type="number" name="temperatura_ambiental" id="temperatura_ambiental"
                                                 autocomplete="given-name"
@@ -74,7 +76,7 @@ botonInsertar.addEventListener('click', () => {
                                     <div class="sm:col-span-3">
                                         <label for="temperatura_compostera"
                                             class="block text-sm/6 font-medium text-gray-900">Temperatura
-                                            compostera</label>
+                                            compostera*</label>
                                         <div class="mt-2">
                                             <input type="number" name="temperatura_compostera"
                                                 id="temperatura_compostera" autocomplete="given-name"
@@ -84,7 +86,7 @@ botonInsertar.addEventListener('click', () => {
 
                                     <div class="sm:col-span-3">
                                         <label for="nivel_llenado_antes"
-                                            class="block text-sm/6 font-medium text-gray-900">Nivel llenado</label>
+                                            class="block text-sm/6 font-medium text-gray-900">Nivel llenado*</label>
                                         <div class="mt-2">
                                             <input type="number" name="nivel_llenado_antes" id="nivel_llenado_antes"
                                                 autocomplete="given-name"
@@ -107,8 +109,8 @@ botonInsertar.addEventListener('click', () => {
                                         <div class="mt-2">
                                             <select name="presencia_insectos" id="presencia_insectos"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Si">Si</option>
-                                                <option value="No">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="0">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -119,9 +121,9 @@ botonInsertar.addEventListener('click', () => {
                                         <div class="mt-2">
                                             <select name="humedad" id="humedad"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Baja">Baja</option>
-                                                <option value="Media">Media</option>
-                                                <option value="Alta">Alta</option>
+                                                <option value="escasa">Escasa</option>
+                                                <option value="buena">Buena</option>
+                                                <option value="exceso">Exceso</option>
                                             </select>
                                         </div>
                                     </div>
@@ -175,8 +177,8 @@ botonInsertar.addEventListener('click', () => {
                                         <div class="mt-2">
                                             <select name="riego" id="riego"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Si">Si</option>
-                                                <option value="No">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="0">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -187,8 +189,8 @@ botonInsertar.addEventListener('click', () => {
                                         <div class="mt-2">
                                             <select name="revolver" id="revolver"
                                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                                                <option value="Si">Si</option>
-                                                <option value="No">No</option>
+                                                <option value="1">Si</option>
+                                                <option value="0">No</option>
                                             </select>
                                         </div>
                                     </div>
@@ -268,7 +270,7 @@ botonInsertar.addEventListener('click', () => {
                                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                     <div class="col-span-full">
                                         <label for="nivel_llenado_despues"
-                                            class="block text-sm/6 font-medium text-gray-900">Nivel llenado</label>
+                                            class="block text-sm/6 font-medium text-gray-900">Nivel llenado*</label>
                                         <div class="mt-2">
                                             <input type="number" name="nivel_llenado_despues" id="nivel_llenado_despues"
                                                 autocomplete="given-name"
@@ -324,135 +326,238 @@ botonInsertar.addEventListener('click', () => {
             </div>
     `
 
+        const inicioCicloBtn = document.getElementById("inicio_ciclo");
+        const composteraBtn = document.getElementById("compostera");
+        const formDatosBoton = document.querySelector(".submit")
+        const formDatos = document.querySelector(".formDatos")
 
-    const inicioCicloBtn = document.getElementById("inicio_ciclo");
-    const composteraBtn = document.getElementById("compostera");
-    const formDatosBoton = document.querySelector(".submit")
-    const formDatos = document.querySelector(".formDatos")
-    
+        formDatosBoton.addEventListener('click', insertarDatos);
 
+        inicioCicloBtn.addEventListener('input', mostrarObservacionesBolo);
 
-    formDatosBoton.addEventListener('click', insertarDatos);
+        mostrarObservacionesBolo();
 
-    inicioCicloBtn.addEventListener('input', mostrarBolo);
-    inicioCicloBtn.addEventListener('input', mostrarCiclo);
-    // composteraBtn.addEventListener('input', mostrarBolo);
-
-    async function insertarDatos(){
-        const formDatas = new FormData(formDatos)
-        const data = Object.fromEntries(formDatas.entries());
-        console.log(data);
-
-        try {
-            // Insertar en "bolo"
-            const boloResponse = await fetch('/api/bolos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ observaciones: data.observaciones })
-            });
-            const bolo = await boloResponse.json();
-    
-            // Insertar en "ciclo"
-            const cicloResponse = await fetch('/api/ciclos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_bolo: bolo.id_bolo, descripcion: data.descripcionCiclo })
-            });
-            const ciclo = await cicloResponse.json();
-    
-            // Insertar en "registros"
-            const registroResponse = await fetch('/api/registros', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id_ciclo: ciclo.id_ciclo, detalle: data.detalleRegistro })
-            });
-            const registro = await registroResponse.json();
-    
-            // Insertar en "estados"
-            // const estadoResponse = await fetch('/api/estados', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ id_registro: registro.id_registro, estado: data.estado })
-            // });
-    
-            // const estado = await estadoResponse.json();
-            alert('Datos insertados correctamente: ' + JSON.stringify(estado));
-        } catch (error) {
-            console.error('Error durante la inserción:', error);
-            alert('Hubo un error al insertar los datos.');
+        async function consultarCompostera(id) {
+            let compostera = await fetch(`/api/composteras/${id}`, {
+                method: 'GET',
+                headers: option
+            }).then((response) => response.json())
+                .then((objeto) => objeto.data);
+            console.log(compostera);
+            return compostera;
         }
-    }
-    
-    function mostrarCiclo() {
-        let contenedorCiclo = document.getElementById("contenedorCiclo");
-    
-        if (inicioCicloBtn.value === "No") {
-            let label = document.createElement("label");
-            label.setAttribute("for", "ciclo");
-            label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
-            label.textContent = "Ciclo";
-    
-            let separador = document.createElement("div");
-            separador.classList.add("mt-2");
-    
-            let selectorCiclo = document.createElement("select");
-            selectorCiclo.name = "ciclo";
-            selectorCiclo.id = "ciclo";
-            selectorCiclo.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3", "py-1.5",
-                "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1", "outline-gray-300",
-                "placeholder:text-gray-400", "focus:outline-2", "focus:-outline-offset-2",
-                "focus:outline-indigo-600", "sm:text-sm/6");
-    
-            let eleccion = document.createElement("option");
-            eleccion.value = 10;
-            eleccion.textContent = eleccion.value;
-    
-            selectorCiclo.appendChild(eleccion);
-            separador.appendChild(selectorCiclo);
-            contenedorCiclo.appendChild(label);
-            contenedorCiclo.appendChild(separador);
-        } else {
-            if (contenedorCiclo.hasChildNodes()) {
-                while (contenedorCiclo.firstElementChild) { contenedorCiclo.firstElementChild.remove(); }
+
+        async function consultarCiclos() {
+            let consultaCiclos = await fetch('/api/ciclos', {
+                method: 'GET',
+                headers: option
+            }).then((response) => response.json())
+                .then((objeto) => objeto.data);
+            let ciclo = consultaCiclos.find(ciclo => ciclo.terminado == 0 && ciclo.compostera_id == composteraBtn.value);
+            console.log(ciclo);
+            return ciclo;
+        }
+
+        async function consultarBolo(compostera) {
+            let consultaBolos = await fetch('/api/bolos', {
+                method: 'GET',
+                headers: option
+            }).then((response) => response.json())
+                .then((objeto) => objeto.data);
+
+            //el campo terminado de ciclos no se tiene en cuenta *ARREGLAR*
+            let bolo = {}
+            if (compostera.codigo == 'c-22') {
+                bolo = consultaBolos.find(bolo => bolo.ciclo1 == 1 && bolo.ciclo2 == 0);
+            } else if (compostera.codigo == 'c-33') {
+                bolo = consultaBolos.find(bolo => bolo.ciclo1 == 1 && bolo.ciclo2 == 1 && bolo.ciclo3 == 0);
+            }
+
+            if (bolo == undefined) alert('El bolo no ha terminado el ciclo anterior');
+            console.log(bolo);
+            return bolo;
+        }
+
+        async function insertarDatos() {
+            const formDatas = new FormData(formDatos)
+            const data = Object.fromEntries(formDatas.entries());
+            console.log(data);
+            const camposRequeridos = [
+                data.observaciones_bolo, data.temperatura_ambiental,
+                data.temperatura_compostera, data.nivel_llenado_antes, data.nivel_llenado_despues];
+
+            if (!camposRequeridos.every((campo) => campo != "")) {
+                alert('Faltan campos obligatorios por llenar');
+                return;
+            }
+
+            try {
+                const userId = document.querySelector("span.userId").textContent;
+                let compostera = await consultarCompostera(data.compostera);
+                let ciclo = await consultarCiclos();
+
+                if (!ciclo && data.inicio_ciclo == 1) {
+                    if (data.compostera == 1) {
+                        let bolo = await crearBolo();
+                        console.log(bolo);
+
+                        ciclo = await crearCiclo(bolo);
+                        console.log(ciclo);
+
+                    } else if (data.compostera != 1) {
+                        let bolo = await consultarBolo(compostera);
+
+                        ciclo = await crearCiclo(bolo);
+                        console.log(ciclo);
+                    }
+
+                    crearRegistro(ciclo, userId);
+                } else if (ciclo && data.inicio_ciclo == 0) {
+                    crearRegistro(ciclo, userId);
+                } else {
+                    if (ciclo && data.inicio_ciclo == 1) alert('Ya existe un ciclo activo en esta compostera');
+                    else if (!ciclo && data.inicio_ciclo == 0) alert('Todavía no se ha iniciado un ciclo en esta compostera');
+                }
+
+            } catch (error) {
+                console.error('Error durante la inserción:', error);
+                alert('Hubo un error al insertar los datos.');
+            }
+
+            async function crearBolo() {
+                // Insertar en "bolo"
+                const boloResponse = await fetch('/api/bolos', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({ observaciones: data.observaciones_bolo })
+                });
+                let bolo_promise = await boloResponse.json();
+                return bolo_promise.data;
+            }
+
+            async function crearCiclo(bolo) {
+                // Insertar en "ciclo"
+                const cicloResponse = await fetch('/api/ciclos', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({ bolo_id: bolo.id, compostera_id: data.compostera })
+                });
+                let ciclo_promise = await cicloResponse.json();
+                return ciclo_promise.data;
+            }
+
+            async function crearRegistro(ciclo, userId) {
+                // Insertar en "registros"
+                const registroResponse = await fetch('/api/registros', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({ inicio_ciclo: data.inicio_ciclo, ciclo_id: ciclo.id, user_id: userId, compostera_id: data.compostera })
+                });
+
+                let registro_promise = await registroResponse.json();
+                let registro = registro_promise.data;
+                crearAntes(registro);
+                crearDurante(registro);
+                crearDespues(registro);
+            }
+
+            async function crearAntes(registro) {
+                // Insertar en "antes"
+                const antesResponse = await fetch('/api/antes', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({
+                        temperatura_ambiental: data.temperatura_ambiental,
+                        temperatura_compostera: data.temperatura_compostera,
+                        nivel_llenado: data.nivel_llenado_antes,
+                        olor: data.olor,
+                        presencia_insectos: data.presencia_insectos,
+                        humedad: data.humedad,
+                        fotografias: data.fotografias_antes.webkitRelativePath,
+                        observaciones: data.observaciones_antes,
+                        registro_id: registro.id
+                    })
+                });
+                let antes_promise = await antesResponse.json();
+                console.log(antes_promise);
+                let antes = antes_promise.data;
+            }
+
+            async function crearDurante(registro) {
+                // Insertar en "durante"
+                const duranteResponse = await fetch('/api/durante', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({
+                        riego: data.riego,
+                        revolver: data.revolver,
+                        aporte_verde: data.aporte_verde,
+                        tipo_aporte_verde: data.tipo_aporte_verde,
+                        aporte_seco: data.aporte_seco,
+                        fotografias: data.fotografias_durante.webkitRelativePath,
+                        observaciones: data.observaciones_durante,
+                        registro_id: registro.id
+                    })
+                });
+                let durante_promise = await duranteResponse.json();
+                console.log(durante_promise);
+                let durante = durante_promise.data;
+            }
+
+            async function crearDespues(registro) {
+                // Insertar en "despues"
+                const despuesResponse = await fetch('/api/despues', {
+                    method: 'POST',
+                    headers: option,
+                    body: JSON.stringify({
+                        nivel_llenado: data.nivel_llenado_despues,
+                        fotografias: data.fotografias_despues.webkitRelativePath,
+                        observaciones: data.observaciones_despues,
+                        registro_id: registro.id
+                    })
+                });
+                let despues_promise = await despuesResponse.json();
+                console.log(despues_promise);
+                let despues = despues_promise.data;
             }
         }
-    }
-    
-    function mostrarBolo() {
-        let contenedorBolo = document.getElementById("contenedorBolo");
-        
-        if (inicioCicloBtn.value === "No") {
-            console.log("boloDIV");
-            let label = document.createElement("label");
-            label.setAttribute("for", "bolo");
-            label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
-            label.textContent = "Bolo";
-    
-            let separador = document.createElement("div");
-            separador.classList.add("mt-2");
-    
-            let selectorBolo = document.createElement("select");
-            selectorBolo.name = "bolo";
-            selectorBolo.id = "bolo";
-            selectorBolo.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3", "py-1.5",
-                "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1", "outline-gray-300",
-                "placeholder:text-gray-400", "focus:outline-2", "focus:-outline-offset-2",
-                "focus:outline-indigo-600", "sm:text-sm/6");
-    
-            let eleccion = document.createElement("option");
-            eleccion.value = 10;
-            eleccion.textContent = eleccion.value;
-    
-            selectorBolo.appendChild(eleccion);
-            separador.appendChild(selectorBolo);
-            contenedorBolo.appendChild(label);
-            contenedorBolo.appendChild(separador);
+
+        function mostrarObservacionesBolo() {
+            if (inicioCicloBtn.value == 1 && composteraBtn.value == 1) {
+                let contenedorObservaciones = document.createElement("div");
+                contenedorObservaciones.classList.add("col-span-full");
+                contenedorObservaciones.id = "contenedorObservaciones";
+
+                let label = document.createElement("label");
+                label.setAttribute("for", "observaciones_bolo");
+                label.classList.add("block", "text-sm/6", "font-medium", "text-gray-900");
+                label.textContent = "Observaciones del bolo*";
+
+                let separador = document.createElement("div");
+                separador.classList.add("mt-2");
+
+                let observaciones = document.createElement("textarea");
+                observaciones.name = "observaciones_bolo";
+                observaciones.id = "observaciones_bolo";
+                observaciones.rows = 3;
+                observaciones.classList.add("block", "w-full", "rounded-md", "bg-white", "px-3",
+                    "py-1.5", "text-base", "text-gray-900", "outline", "outline-1", "-outline-offset-1",
+                    "outline-gray-300", "placeholder:text-gray-400", "focus:outline-2",
+                    "focus:-outline-offset-2", "focus:outline-indigo-600", "sm:text-sm/6");
+
+                separador.appendChild(observaciones);
+                contenedorObservaciones.appendChild(label);
+                contenedorObservaciones.appendChild(separador);
+                inicioCicloBtn.parentElement.parentElement.parentElement.appendChild(contenedorObservaciones);
+            } else if (document.getElementById("contenedorObservaciones")) {
+                document.getElementById("contenedorObservaciones").remove();
+            }
         }
     }
 })
 
 
-    
+
 
 
 

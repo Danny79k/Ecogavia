@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('registros', function (Blueprint $table) {
-            $table->foreignId('ciclo_id')->on('ciclos');
+        Schema::table('ciclos', function (Blueprint $table) {
+            $table->foreignId('compostera_id')->on('composteras');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('registros', function (Blueprint $table) {
-            $table->dropColumn('ciclo_id');
+        Schema::table('ciclos', function (Blueprint $table) {
+            $table->dropForeign('compostera_id');
         });
     }
 };

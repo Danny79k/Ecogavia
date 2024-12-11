@@ -18,9 +18,5 @@ class RegistroController extends Controller
     protected $model = Registro::class;
 
     protected $policy = RegistroPolicy::class;
-    // public function __construct()
-    // {
-    //     $this->middleware('auth:sanctum');
-    // }
     
 }

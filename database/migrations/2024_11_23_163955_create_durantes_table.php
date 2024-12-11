@@ -16,11 +16,11 @@ return new class extends Migration
             $table->timestamps();
             $table->boolean('riego');
             $table->boolean('revolver');
-            $table->integer('aporte_verde');
-            $table->string('tipo_aporte_verde');
-            $table->integer('aporte_seco');
-            $table->string('fotografias');
-            $table->string('observaciones');
+            $table->integer('aporte_verde')->nullable();
+            $table->string('tipo_aporte_verde')->nullable();
+            $table->integer('aporte_seco')->nullable();
+            $table->string('fotografias')->nullable();
+            $table->string('observaciones')->nullable();
             $table->foreignId('registro_id')->on('registros');
         });
     }

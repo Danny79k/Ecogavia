@@ -24,11 +24,5 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         Centro::factory(5)->create();
         Compostera::factory(3)->create();
-        Ciclo::factory(5)->create();
-        Antes::factory(10)->create();
-        Durante::factory(10)->create();
-        Despues::factory(10)->create();
-        Registro::factory(20)->create();
-        Bolo::factory(20)->create();
     }
 }

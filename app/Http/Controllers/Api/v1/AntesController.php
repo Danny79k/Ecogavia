@@ -9,7 +9,8 @@ use App\Models\Antes;
 
 class AntesController extends Controller
 {
-    use DisableAuthorization;
+  
+  //  use DisableAuthorization;
 
     protected $model = Antes::class;
 }
