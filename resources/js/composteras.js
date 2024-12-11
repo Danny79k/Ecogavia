@@ -106,12 +106,12 @@ botonInsertar.addEventListener('click', async (e) => {
             row.appendChild(celdaEstado);
 
             if (ciclosActivos.find(ciclo => ciclo.compostera_id == registros.data[i].id)) {
-                celdaEstado.innerHTML = `<button class="statusInUse">Ocupada</button>`;
+                celdaEstado.innerHTML = `<span class="statusInUse">Ocupada</span>`;
                 let celdaTerminar = document.createElement("td");
                 celdaTerminar.innerHTML = `<button class="buttonFinish" data-id="${registros.data[i].id}">Terminar ciclo</button>`;
                 row.appendChild(celdaTerminar);
             } else {
-                celdaEstado.innerHTML = `<button class="statusFree">Libre</button>`;
+                celdaEstado.innerHTML = `<span class="statusFree">Libre</span>`;
             }
 
             tBody.appendChild(row)
@@ -137,11 +137,12 @@ botonInsertar.addEventListener('click', async (e) => {
             let compostera = registros.data.find(compostera => compostera.id == e.target.getAttribute('data-id'));
             console.log(compostera);
 
-            modificarCiclo(ciclo.id);
-            modificarBolo(ciclo.bolo_id, compostera.codigo);
+            await modificarCiclo(ciclo.id);
+            await modificarBolo(ciclo.bolo_id, compostera.codigo);
 
             //Volver a cargar la página
-            //generarTabla();
+            main.innerHTML = '';
+            generarTabla();
         }
     })
 
