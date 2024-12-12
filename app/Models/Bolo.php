@@ -10,6 +10,10 @@ class Bolo extends Model
     use HasFactory;
 
     protected $fillable = [
+        'terminado',
+        'ciclo1',
+        'ciclo2',
+        'ciclo3',
         'observaciones',
     ];
 
