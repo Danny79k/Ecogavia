@@ -429,7 +429,7 @@ main.addEventListener('click', (e) => {
                 const boloResponse = await fetch('/api/bolos', {
                     method: 'POST',
                     headers: option,
-                    body: JSON.stringify({ observaciones: data.observaciones_bolo })
+                    body: JSON.stringify({ terminado: 0, ciclo1: 0, ciclo2: 0, ciclo3: 0, observaciones: data.observaciones_bolo })
                 });
                 let bolo_promise = await boloResponse.json();
                 return bolo_promise.data;
@@ -440,7 +440,7 @@ main.addEventListener('click', (e) => {
                 const cicloResponse = await fetch('/api/ciclos', {
                     method: 'POST',
                     headers: option,
-                    body: JSON.stringify({ bolo_id: bolo.id, compostera_id: data.compostera })
+                    body: JSON.stringify({ terminado: 0, bolo_id: bolo.id, compostera_id: data.compostera })
                 });
                 let ciclo_promise = await cicloResponse.json();
                 return ciclo_promise.data;

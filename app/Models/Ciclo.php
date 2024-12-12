@@ -10,6 +10,7 @@ class Ciclo extends Model
     use HasFactory;
 
     protected $fillable = [
+        'terminado',
         'bolo_id',
         'compostera_id',
     ];
